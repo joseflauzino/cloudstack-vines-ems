@@ -56,5 +56,17 @@ class CloudstackWrapper():
 		try:
 			response = urllib2.urlopen(url).read()
 		except Exception as e:
-			return (-1, "CLOUDSTACK-WRAPPER: Could not recovery VNF (URL error)")
-		return json.loads(response)
+			return (False, "CLOUDSTACK-CLIENT: Could not recovery VNF (URL error)")
+		return (True,json.loads(response))
+
+	# Implementation to be done in the cloudstack
+	def scale_vnf(self,vnf_id,service_offering_id):
+		request = self.__request_factory('scaleVnf')
+		self.request['id']=vnf_id
+		self.request['serviceofferingid']=service_offering_id
+		url = self.__generate_url(request)
+		try:
+			response = urllib2.urlopen(url).read()
+		except Exception as e:
+			return (False,"CLOUDSTACK-CLIENT: Could not scale VNF (URL error)")
+		return (True,json.loads(response))

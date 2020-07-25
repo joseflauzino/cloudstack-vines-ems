@@ -5,10 +5,11 @@ import logging
 import os
 import time
 import json
-from utils import *
-from em_client import *
+from util import *
+from management_agent_client import *
 
 def __main():
+    module_name = 'auto_scaling'
     logging.warning("MCPA is running now!")
     while True:
         monitor = read_file(module_name,'monitor')
@@ -75,8 +76,8 @@ def check_metrics(vnf_id,metrics):
     return {"check_metrics":True,"action":None}
 
 def __get_metrics(vnf_ip):
-    em_client = ElementManagementClient()
-    return em_client.get_metrics(vnf_ip).json()
+    ma_client = ManagementAgentClient()
+    return ma_client.get_metrics(vnf_ip).json()
 
 def run_mcpa():
     __main()

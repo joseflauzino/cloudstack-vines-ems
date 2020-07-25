@@ -5,12 +5,14 @@ import time
 import json
 import logging
 from util import *
+from cloudstack_client_api import *
 
 config = read_conf('auto_scaling','config.json')
 cs = CloudstackWrapper()
 
 def __main():
 	module_name = 'auto_scaling'
+	logging.warning("Scaling Agent is running now!")
 	while True:
 		to_scale = read_file(module_name,'to_scale')
 		scaling = read_file(module_name,'scaling')
@@ -40,13 +42,14 @@ def __main():
 					save_file(module_name,'monitor',monitor)
 					print "VNF escalada com sucesso!"
 			else:
-				print "Detectado nova VNF a ser escalada"
-				print "Escalando VNF"
+				logging.warning("New VNF to be escalated detected")
+				logging.debug("Scaling VNF %s",vnf['vnf_id'])
 				newserviceofferingid = vnf['policy'][vnf['action']]['newserviceofferingid']
-				job_id = __scale_vnf(vnf['vnf_id'],newserviceofferingid)
-				vnf['job_id'] = job_id
-				print "Adicionando VNF em scaling"
-				scaling['vnfs'].append(vnf)
+				success,data = __scale_vnf(vnf['vnf_id'],newserviceofferingid)
+				if success:
+					vnf['job_id'] = data['recoveryvnfresponse']['jobid']
+					print "Adicionando VNF em scaling"
+					scaling['vnfs'].append(vnf)
 			i+=1
 		save_file(module_name,'to_scale',to_scale)
 		save_file(module_name,'scaling',scaling)
@@ -54,8 +57,7 @@ def __main():
 		time.sleep(config['monitoringInterval'])
 
 def __scale_vnf(vnf_id,service_offering_id):
-	response = cs.scale_vnf(vnf_id,service_offering_id)
-	return response['recoveryvnfresponse']['jobid']
+	return cs.scale_vnf(vnf_id,service_offering_id)
 
 def run_scaling_agent():
     __main()
