@@ -5,10 +5,10 @@ import time
 import json
 import logging
 from util import *
-from cloudstack_client_api import *
+from management_agent import *
 
 config = read_conf('failure_detector','config.json')
-cs = CloudstackWrapper()
+ma_client = ManagementAgentClient()
 
 def __main():
 	module_name = 'failure_detector'
@@ -55,7 +55,7 @@ def __main():
 		time.sleep(config['monitoringInterval'])
 
 def __recovery_vnf(vnf_id):
-	response = cs.recovery_vnf(vnf_id)
+	response = ma_client.recovery_vnf(vnf_id)
 	return response['recoveryvnfresponse']['jobid']
 
 def run_recovery_agent():

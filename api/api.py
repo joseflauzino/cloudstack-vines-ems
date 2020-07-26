@@ -5,7 +5,7 @@ import requests
 from eve import Eve
 from flask import request, jsonify
 from subprocess import Popen, PIPE, check_output, call
-from element_management import *
+from management_agent import *
 from util import *
 import sys
 
@@ -20,7 +20,7 @@ import sys
 reload(sys)  
 sys.setdefaultencoding('latin1')
 app = Eve()
-em = ElementManagement()
+em = ManagementAgentClient()
 @app.after_request
 def after_request(response):
     response.headers.set('Access-Control-Allow-Origin', '*')

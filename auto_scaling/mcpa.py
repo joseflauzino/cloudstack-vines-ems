@@ -6,7 +6,7 @@ import os
 import time
 import json
 from util import *
-from management_agent_client import *
+from management_agent import *
 
 def __main():
     module_name = 'auto_scaling'
