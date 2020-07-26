@@ -20,7 +20,7 @@ import sys
 reload(sys)  
 sys.setdefaultencoding('latin1')
 app = Eve()
-em = ManagementAgentClient()
+ma = ManagementAgentClient()
 @app.after_request
 def after_request(response):
     response.headers.set('Access-Control-Allow-Origin', '*')
@@ -34,7 +34,7 @@ def ems_status():
     vnf_ip = request.json['vnf_ip']
     router_ip = request.json['router_ip']
     http_header = "--header \"Content-Type: application/json\""
-    url = em.get_emsstatus(vnf_ip)
+    url = ma.get_emsstatus(vnf_ip)
     get_emsstatus_cmd = "'curl -X GET %s %s'" % (http_header,url)
     ssh_cmd = "ssh -i /root/.ssh/id_rsa.cloud %s -p 3922 %s" % (router_ip,get_emsstatus_cmd)
     response = run_ssh_cmd(ssh_cmd)
@@ -53,7 +53,7 @@ def get_status():
     vnf_ip = request.json['vnf_ip']
     router_ip = request.json['router_ip']
     http_header = "--header \"Content-Type: application/json\""
-    url = em.get_status(vnf_ip)
+    url = ma.get_status(vnf_ip)
     get_status_cmd = "'curl -X GET %s %s'" % (http_header,url)
     ssh_cmd = "ssh -i /root/.ssh/id_rsa.cloud %s -p 3922 %s" % (router_ip,get_status_cmd)
     response = run_ssh_cmd(ssh_cmd)
@@ -66,7 +66,7 @@ def get_log():
     vnf_ip = request.json['vnf_ip']
     router_ip = request.json['router_ip']
     http_header = "--header \"Content-Type: application/json\""
-    url = em.get_log(vnf_ip)
+    url = ma.get_log(vnf_ip)
     get_log_cmd = "'curl -X POST %s %s'" % (http_header,url)
     ssh_cmd = "ssh -i /root/.ssh/id_rsa.cloud %s -p 3922 %s" % (router_ip,get_log_cmd)
     response = run_ssh_cmd(ssh_cmd)
@@ -79,7 +79,7 @@ def stop_function():
     vnf_ip = request.json['vnf_ip']
     router_ip = request.json['router_ip']
     http_header = "--header \"Content-Type: application/json\""
-    url = em.stop_function(vnf_ip)
+    url = ma.stop_function(vnf_ip)
     stop_cmd = "'curl -X POST %s %s'" % (http_header,url)
     ssh_cmd = "ssh -i /root/.ssh/id_rsa.cloud %s -p 3922 %s" % (router_ip,stop_cmd)
     response = run_ssh_cmd(ssh_cmd)
@@ -93,7 +93,7 @@ def start_function():
     vnf_ip = request.json['vnf_ip']
     router_ip = request.json['router_ip']
     http_header = "--header \"Content-Type: application/json\""
-    url = em.start_function(vnf_ip)
+    url = ma.start_function(vnf_ip)
     start_cmd = "'curl -X POST %s %s'" % (http_header,url)
     ssh_cmd = "ssh -i /root/.ssh/id_rsa.cloud %s -p 3922 %s" % (router_ip,start_cmd)
     response = run_ssh_cmd(ssh_cmd)
@@ -107,7 +107,7 @@ def install():
     vnf_ip = request.json['vnf_ip']
     router_ip = request.json['router_ip']
     http_header = "--header \"Content-Type: application/json\""
-    url = em.install(vnf_ip)
+    url = ma.install(vnf_ip)
     install_cmd = "'curl -X POST %s %s'" % (http_header,url)
     ssh_cmd = "ssh -i /root/.ssh/id_rsa.cloud %s -p 3922 %s" % (router_ip,install_cmd)
     response = run_ssh_cmd(ssh_cmd)
@@ -124,7 +124,7 @@ def push_vnfp():
     function_path = '/tmp/' + f.filename
     f.save(function_path)
     http_header = "--header \"Content-Type: application/zip\""
-    url = em.push_vnfp(vnf_ip)
+    url = ma.push_vnfp(vnf_ip)
     # Send VNFP file to router via SCP
     scp_cmd = "scp -i /root/.ssh/id_rsa.cloud -P 3922 %s root@%s:/root/" % (function_path,router_ip)
     response = run_ssh_cmd(scp_cmd)
@@ -150,7 +150,7 @@ def setsfcforwarding():
     data = request.json['data']
     data = json.dumps(data)
     http_header = "--header \"Content-Type: application/json\""
-    url = em.setsfcforwarding(vnf_ip)
+    url = ma.setsfcforwarding(vnf_ip)
     set_sfc_forwarding_cmd = "'curl -X POST %s --data' \"'\" '%s' \"'\" '%s'" % (http_header,data,url)
     ssh_cmd = "ssh -i /root/.ssh/id_rsa.cloud %s -p 3922 %s" % (router_ip,set_sfc_forwarding_cmd)
     response = run_ssh_cmd(ssh_cmd)
