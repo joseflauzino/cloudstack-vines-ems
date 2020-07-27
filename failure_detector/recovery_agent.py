@@ -40,7 +40,7 @@ def __main():
 					alive = read_file(module_name,'alive')
 					alive['vnfs'].append(vnf)
 					save_file(module_name,'alive',alive)
-					logging.info("VNF %s successfully recovered!")
+					logging.info("VNF %s successfully recovered!",vnf['vnf_id'])
 			else:
 				logging.warning("New crashed VNF detected")
 				logging.info("Asking to VNFM recover the VNF %s", vnf['vnf_id'])
