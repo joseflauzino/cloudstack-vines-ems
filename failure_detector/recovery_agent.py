@@ -49,6 +49,8 @@ def __main():
 					vnf['job_id'] = data['recoveryvnfresponse']['jobid']
 					logging.debug("Adding VNF %s to the recovery list", vnf['vnf_id'])
 					recovery['vnfs'].append(vnf)
+				else:
+					print "Error: %s" % data
 			i+=1
 		save_file(module_name,'detected',detected)
 		save_file(module_name,'recovery',recovery)
