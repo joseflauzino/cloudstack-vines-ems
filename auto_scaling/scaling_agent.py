@@ -5,7 +5,7 @@ import time
 import json
 import logging
 from util import *
-from cloudstack_client_api import *
+from cloudstack_api_client import *
 
 config = read_conf('auto_scaling','config.json')
 cs = CloudstackWrapper()
