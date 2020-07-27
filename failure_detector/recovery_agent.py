@@ -22,7 +22,7 @@ def __main():
 				logging.info("VNF %s is being recovered", vnf['vnf_id'])
 				job_status = get_job_status(cs, vnf['job_id'])
 				if job_status['status'] == 'done':
-					logging.degub("Removing VNF %s from the recovery list", vnf['vnf_id'])
+					logging.debug("Removing VNF %s from the recovery list", vnf['vnf_id'])
 					index = 0
 					for x in recovery['vnfs']:
 						if x['vnf_id'] == vnf['vnf_id']:
@@ -31,12 +31,12 @@ def __main():
 					if job_status['success'] == False: # VNF recovery fail
 						# TODO: add limit to try to recovery a VNF
 						continue # Keeps VNF in the detected list to try recover again
-					logging.degub("Removing VNF %s from the detected list", vnf['vnf_id'])
+					logging.debug("Removing VNF %s from the detected list", vnf['vnf_id'])
 					del detected['vnfs'][i]
-					logging.degub("Removing VNF %s from the detected list", vnf['vnf_id'])
-					logging.degub("Resetting VNF %s timeouts",vnf['vnf_id'])
+					logging.debug("Removing VNF %s from the detected list", vnf['vnf_id'])
+					logging.debug("Resetting VNF %s timeouts",vnf['vnf_id'])
 					vnf['timeouts'] = 0
-					logging.degub("Adding VNF %s to the alive list", vnf['vnf_id'])
+					logging.debug("Adding VNF %s to the alive list", vnf['vnf_id'])
 					alive = read_file(module_name,'alive')
 					alive['vnfs'].append(vnf)
 					save_file(module_name,'alive',alive)
