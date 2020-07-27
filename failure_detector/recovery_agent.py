@@ -20,7 +20,7 @@ def __main():
 		for vnf in detected['vnfs']:
 			if is_vnf_in(vnf['vnf_id'],recovery['vnfs']):
 				logging.info("VNF %s is being recovered", vnf['vnf_id'])
-				job_status = get_job_status(vnf['job_id'])
+				job_status = get_job_status(cs, vnf['job_id'])
 				if job_status['status'] == 'done':
 					logging.degub("Removing VNF %s from the recovery list", vnf['vnf_id'])
 					index = 0
@@ -43,7 +43,7 @@ def __main():
 					logging.info("VNF %s successfully recovered!")
 			else:
 				logging.warning("New crashed VNF detected")
-				logging.info("Asking to VNFM recorer the VNF %s", vnf['vnf_id'])
+				logging.info("Asking to VNFM recover the VNF %s", vnf['vnf_id'])
 				success,data = __recovery_vnf(vnf['vnf_id'])
 				if success:
 					vnf['job_id'] = data['recoveryvnfresponse']['jobid']
