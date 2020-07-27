@@ -51,7 +51,7 @@ class CloudstackWrapper():
 	# Implementation to be done in the cloudstack
 	def recovery_vnf(self,vnf_id):
 		request = self.__request_factory('recoveryVnf')
-		request['id']=vnf_id
+		request['vnfid']=vnf_id
 		url = self.__generate_url(request)
 		try:
 			response = urllib2.urlopen(url).read()
