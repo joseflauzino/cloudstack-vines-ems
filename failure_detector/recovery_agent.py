@@ -20,7 +20,7 @@ def __main():
 		for vnf in detected['vnfs']:
 			if is_vnf_in(vnf['vnf_id'],recovery['vnfs']):
 				logging.info("VNF %s is being recovered", vnf['vnf_id'])
-				job_status = get_job_status(vnf['job_id'])
+				job_status = cs.get_job_status(vnf['job_id'])
 				if job_status['status'] == 'done':
 					logging.degub("Removing VNF %s from the recovery list", vnf['vnf_id'])
 					index = 0

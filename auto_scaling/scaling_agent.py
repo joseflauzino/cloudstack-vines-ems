@@ -20,7 +20,7 @@ def __main():
 		for vnf in to_scale['vnfs']:
 			if is_vnf_in(vnf['vnf_id'],scaling['vnfs']):
 				print "VNF com IP %s ja esta sendo escalada" % vnf['vnf_ip']
-				job_status = get_job_status(vnf['job_id'])
+				job_status = cs.get_job_status(vnf['job_id'])
 				if job_status['status'] == 'done':
 					print "Removendo vnf de scaling"
 					index = 0
