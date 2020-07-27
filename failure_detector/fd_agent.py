@@ -14,7 +14,7 @@ def __main():
         i = 0
         for vnf in alive['vnfs']:
             detected = read_file(module_name,'detected')
-            if not is_vnf_up(vnf['vnf_ip']):
+            if not is_vnf_up(vnf['router_ip'], vnf['vnf_ip']):
                 vnf['timeouts'] += 1
                 logging.warning("[VNF_INACTIVE] VNF %s is inactive. Timeouts: %s",vnf['vnf_ip'],vnf['timeouts'])
                 if vnf['timeouts'] >= 3:
