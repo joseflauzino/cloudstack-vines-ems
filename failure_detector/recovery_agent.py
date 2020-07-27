@@ -44,10 +44,11 @@ def __main():
 			else:
 				logging.warning("New crashed VNF detected")
 				logging.info("Asking to VNFM recorer the VNF %s", vnf['vnf_id'])
-				job_id = __recovery_vnf(vnf['vnf_id'])
-				vnf['job_id'] = job_id
-				logging.debug("Adding VNF %s to the recovery list", vnf['vnf_id'])
-				recovery['vnfs'].append(vnf)
+				success,data = __recovery_vnf(vnf['vnf_id'])
+				if success:
+					vnf['job_id'] = data['recoveryvnfresponse']['jobid']
+					logging.debug("Adding VNF %s to the recovery list", vnf['vnf_id'])
+					recovery['vnfs'].append(vnf)
 			i+=1
 		save_file(module_name,'detected',detected)
 		save_file(module_name,'recovery',recovery)
@@ -55,8 +56,7 @@ def __main():
 		time.sleep(config['monitoringInterval'])
 
 def __recovery_vnf(vnf_id):
-	response = cs.recovery_vnf(vnf_id)
-	return response['recoveryvnfresponse']['jobid']
+	return cs.recovery_vnf(vnf_id)
 
 def run_recovery_agent():
     __main()
