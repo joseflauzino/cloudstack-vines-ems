@@ -51,6 +51,7 @@ def check_metrics(vnf_id,metrics):
     cpu = 0
     memory = 0
     disk = 0
+    print metrics
     for x in metrics['list']:
         if x['type']=="cpu":
             cpu = "%.2f" % float(x['percent_usage'])
