@@ -8,13 +8,13 @@ import requests
 def create_url(vnf_ip, task):
     return ''.join(['http://', vnf_ip, ':8000/api/', task])
 
-def send_request(self,url):
+def send_request(url):
         try:
             response=urllib2.urlopen(url)
         except:
             return (False, "URL error")
         return (True, json.loads(response.read()))
-        
+
 class ManagementAgentClient():
     """Management Agent Client implementation"""
 
