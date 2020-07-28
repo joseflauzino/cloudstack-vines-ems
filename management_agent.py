@@ -8,19 +8,19 @@ import requests
 def create_url(vnf_ip, task):
     return ''.join(['http://', vnf_ip, ':8000/api/', task])
 
+def send_request(self,url):
+        try:
+            response=urllib2.urlopen(url)
+        except:
+            return (False, "URL error")
+        return (True, json.loads(response.read()))
+        
 class ManagementAgentClient():
     """Management Agent Client implementation"""
 
     def __init__(self):
         self.header = {'Content-Type': 'application/json'}
         self.timeout = 5
-
-    def send_request(self,url):
-        try:
-            response=urllib2.urlopen(url)
-        except:
-            return (False, "URL error")
-        return (True, json.loads(response.read()))
 
     def get_emsstatus(self, vnf_ip):
         """Return Management Agent status."""
