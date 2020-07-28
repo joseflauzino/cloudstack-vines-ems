@@ -15,7 +15,7 @@ class ManagementAgentClient():
         self.header = {'Content-Type': 'application/json'}
         self.timeout = 5
 
-    def __send_request(self,url):
+    def send_request(self,url):
         try:
             response=urllib2.urlopen(url)
         except:
@@ -36,7 +36,7 @@ class ManagementAgentClient():
 
     def get_metrics(self, vnf_ip):
         """Return usage metrics."""
-        return __send_request(create_url(vnf_ip, 'metrics'))
+        return send_request(create_url(vnf_ip, 'metrics'))
 
     def push_vnfp(self, vnf_ip):
         """Push the VNF Package to VNF VM."""
