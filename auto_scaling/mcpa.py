@@ -17,7 +17,9 @@ def __main():
         for vnf in monitor['vnfs']:
             logging.debug("Monitoring...")
             to_scale = read_file(module_name,'to_scale')
-            metrics = __get_metrics(vnf['vnf_ip'])
+            success, metrics = __get_metrics(vnf['vnf_ip'])
+            if not success:
+                logging.error("Could not get VNF metrics")
             logging.debug("Checking metrics of VNF")
             response = check_metrics(vnf['vnf_id'],metrics)
             if response['check_metrics'] == False:
@@ -77,7 +79,7 @@ def check_metrics(vnf_id,metrics):
 
 def __get_metrics(vnf_ip):
     ma_client = ManagementAgentClient()
-    return json.loads(ma_client.get_metrics(vnf_ip))
+    return ma_client.get_metrics(vnf_ip)
 
 def run_mcpa():
     __main()

@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import urllib2
+import urllib
+import json
 import requests
 
 def create_url(vnf_ip, task):
@@ -11,6 +14,13 @@ class ManagementAgentClient():
     def __init__(self):
         self.header = {'Content-Type': 'application/json'}
         self.timeout = 5
+
+    def __send_request(self,url):
+        try:
+            response=urllib2.urlopen(url)
+        except:
+            return (False, "URL error")
+        return (True, json.loads(response.read()))
 
     def get_emsstatus(self, vnf_ip):
         """Return Management Agent status."""
@@ -26,7 +36,7 @@ class ManagementAgentClient():
 
     def get_metrics(self, vnf_ip):
         """Return usage metrics."""
-        return create_url(vnf_ip, 'metrics')
+        return __send_request(create_url(vnf_ip, 'metrics'))
 
     def push_vnfp(self, vnf_ip):
         """Push the VNF Package to VNF VM."""
