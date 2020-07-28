@@ -8,12 +8,21 @@ import requests
 def create_url(vnf_ip, task):
     return ''.join(['http://', vnf_ip, ':8000/api/', task])
 
-def send_request(url):
-        try:
-            response=urllib2.urlopen(url)
-        except:
-            return (False, "URL error")
-        return (True, json.loads(response.read()))
+def run_ssh_cmd(cmd):
+    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    output = process.communicate()
+    # TODO: check for success
+    if output == "":
+        output = "None"
+    return {"status":"success","data":output}
+
+def send_request(router_ip, url):
+    curl_cmd = "'curl -X GET %s'" % (url)
+    ssh_cmd = "ssh -i /root/.ssh/id_rsa.cloud %s -p 3922 %s" % (router_ip, curl_cmd)
+    response = run_ssh_cmd(ssh_cmd)
+    if response["status"] == "error":
+        return (False,"Could not get Management Agent response")
+    return (True, json.loads(response["data"][0]))
 
 class ManagementAgentClient():
     """Management Agent Client implementation"""
@@ -34,9 +43,9 @@ class ManagementAgentClient():
         """Return network function log."""
         return create_url(vnf_ip, 'log')
 
-    def get_metrics(self, vnf_ip):
+    def get_metrics(self, router_ip, vnf_ip):
         """Return usage metrics."""
-        return send_request(create_url(vnf_ip, 'metrics'))
+        return send_request(router_ip, create_url(vnf_ip, 'metrics'))
 
     def push_vnfp(self, vnf_ip):
         """Push the VNF Package to VNF VM."""
