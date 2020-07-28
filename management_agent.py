@@ -4,6 +4,7 @@ import urllib2
 import urllib
 import json
 import requests
+import subprocess
 
 def create_url(vnf_ip, task):
     return ''.join(['http://', vnf_ip, ':8000/api/', task])
