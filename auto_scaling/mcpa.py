@@ -77,7 +77,7 @@ def check_metrics(vnf_id,metrics):
 
 def __get_metrics(vnf_ip):
     ma_client = ManagementAgentClient()
-    return ma_client.get_metrics(vnf_ip).json()
+    return json.loads(ma_client.get_metrics(vnf_ip))
 
 def run_mcpa():
     __main()
