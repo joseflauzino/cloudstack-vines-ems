@@ -17,7 +17,7 @@ def __main():
         for vnf in monitor['vnfs']:
             logging.debug("Monitoring...")
             to_scale = read_file(module_name,'to_scale')
-            success, metrics = __get_metrics(vnf['vnf_ip'])
+            success, metrics = __get_metrics(vnf['router_ip'],vnf['vnf_ip'])
             if not success:
                 logging.error("Could not get VNF metrics")
             logging.debug("Checking metrics of VNF")
@@ -77,9 +77,9 @@ def check_metrics(vnf_id,metrics):
     logging.debug("Resource usage is ok: cpu=%s, mem=%s",cpu,memory)
     return {"check_metrics":True,"action":None}
 
-def __get_metrics(vnf_ip):
+def __get_metrics(router_ip, vnf_ip):
     ma_client = ManagementAgentClient()
-    return ma_client.get_metrics(vnf_ip)
+    return ma_client.get_metrics(router_ip, vnf_ip)
 
 def run_mcpa():
     __main()
