@@ -47,7 +47,7 @@ def __main():
 				newserviceofferingid = vnf['policy'][vnf['action']]['newserviceofferingid']
 				success,data = __scale_vnf(vnf['vnf_id'],newserviceofferingid)
 				if success:
-					vnf['job_id'] = data['recoveryvnfresponse']['jobid']
+					vnf['job_id'] = data['scalevnfresponse']['jobid']
 					print "Adicionando VNF em scaling"
 					scaling['vnfs'].append(vnf)
 			i+=1
