@@ -1,3 +1,0 @@
-{"vnfs": [{"vnf_id": "101", "vnf_ip": "192.168.1.10", "vnf_name": "VNF-Test", "vnf_vm_id": "aadf30d0-bff5-4bad-9e93-0c3ea6d4cddd", "timeouts": 3}]}
-
-{"vnfs": [{"vnf_id": "101", "vnf_ip": "192.168.1.10", "router_ip": "169.254.2.109", "timeouts": 3}]}
