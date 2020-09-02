@@ -9,10 +9,11 @@ ssh_port = "3922"
 #ssh_port = "22"
 
 def run_shell_cmd(cmd):
+	error = None
 	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 	output, error = process.communicate()
 	print "Variavel error: %s" % error
-	if error:
+	if error != None:
 		print "Shell error"
 		return {"status":"ERROR","data":output}
 	output = output.rstrip("\n")
