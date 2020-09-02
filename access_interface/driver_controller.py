@@ -44,7 +44,7 @@ class DriverController():
 	# Public methods
 	def handle_call(self, method_name, args):
 		# instantiate the correct driver and method
-		method = getattr(self._search_driver(self.drivers, self._find_by_key(args,'platform_type')), method_name)
+		method = getattr(self._search_driver(self.drivers, self._find_by_key(args,'vnf_platform')), method_name)
 		# call the method
 		return method(args)
 		# return format {'status':'success or error','data':'the content data'}

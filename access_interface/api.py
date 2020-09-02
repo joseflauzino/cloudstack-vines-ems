@@ -40,7 +40,7 @@ def vnf_status():
     args = []
     args.append({"vnf_ip":request.json['vnf_ip']})
     args.append({"router_ip":request.json['router_ip']})
-    response = driver_controller.handle_call(request.json['platform_type'], "vnfstatus",args)
+    response = driver_controller.handle_call(request.json['vnf_platform'], "vnfstatus",args)
     if response["status"] == "ERROR":
         return {'status':'error','data':"could not get the VNF status"}
     if response["data"][0] != "Running":
@@ -72,7 +72,7 @@ def stop_function():
     args = []
     args.append({"vnf_ip":str(request.json['vnf_ip'])})
     args.append({"router_ip":str(request.json['router_ip'])})
-    args.append({"platform_type":str(request.json['platform_type'])})
+    args.append({"vnf_platform":str(request.json['vnf_platform'])})
     response = driver_controller.handle_call("stop",args)
     if response["status"] == "ERROR":
         print "ERRO: %s" % response["data"]
@@ -84,7 +84,7 @@ def start_function():
     args = []
     args.append({"vnf_ip":str(request.json['vnf_ip'])})
     args.append({"router_ip":str(request.json['router_ip'])})
-    args.append({"platform_type":str(request.json['platform_type'])})
+    args.append({"vnf_platform":str(request.json['vnf_platform'])})
     response = driver_controller.handle_call("start",args)
     if response["status"] == "ERROR":
         print "ERRO: %s" % response["data"]
@@ -96,7 +96,7 @@ def install():
     args = []
     args.append({"vnf_ip":str(request.json['vnf_ip'])})
     args.append({"router_ip":str(request.json['router_ip'])})
-    args.append({"platform_type":str(request.json['platform_type'])})
+    args.append({"vnf_platform":str(request.json['vnf_platform'])})
     response = driver_controller.handle_call("install",args)
     if response["status"] == "ERROR":
         print "ERRO: %s" % response["data"]
@@ -108,7 +108,7 @@ def push_vnfp():
     args = []
     args.append({"vnf_ip":str(request.json['vnf_ip'])})
     args.append({"router_ip":str(request.json['router_ip'])})
-    args.append({"platform_type":str(request.json['platform_type'])})
+    args.append({"vnf_platform":str(request.json['vnf_platform'])})
     f = request.files['file']
     vnfp_path = '/tmp/' + f.filename
     f.save(vnfp_path)
@@ -128,7 +128,7 @@ def setsfcforwarding():
     args = []
     args.append({"vnf_ip":str(request.json['vnf_ip'])})
     args.append({"router_ip":str(request.json['router_ip'])})
-    args.append({"platform_type":str(request.json['platform_type'])})
+    args.append({"vnf_platform":str(request.json['vnf_platform'])})
     data = request.json['data']
     data = json.dumps(data)
     args.append(data)
@@ -144,7 +144,7 @@ def setfirstvnf():
     args.append({"vnf_ip":str(request.json['last_vnf'])})
     args.append({"router_ip":str(request.json['first_vnf'])})
     args.append({"router_ip":str(request.json['router_ip'])})
-    args.append({"platform_type":str(request.json['platform_type'])})
+    args.append({"vnf_platform":str(request.json['vnf_platform'])})
     response = driver_controller.handle_call("setfirstvnf",args)
     if response["status"] == "ERROR":
         return {'status':'error','data':"could not set first VNF"}
@@ -158,4 +158,4 @@ if __name__ == '__main__':
     run_api()
 
 # curl test
-# curl -X POST --header "Content-Type: application/json" --data '{"vnf_ip":"192.168.1.100","router_ip":"169.254.0.1","platform_type":"vines_leaf_driver"}' http://localhost:9000/api/lifecycle/stop
+# curl -X POST --header "Content-Type: application/json" --data '{"vnf_ip":"192.168.1.100","router_ip":"169.254.0.1","vnf_platform":"vines_leaf_driver"}' http://localhost:9000/api/lifecycle/stop
