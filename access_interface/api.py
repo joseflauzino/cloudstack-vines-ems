@@ -111,7 +111,7 @@ def push_vnfp():
     args = []
     args.append({"vnf_ip":str(json.loads(request.form.get('json'))['vnf_ip'])})
     args.append({"router_ip":str(json.loads(request.form.get('json'))['router_ip'])})
-    args.append({"vnf_platform":str(json.loads(request.form.get('json'))['router_ip'])})
+    args.append({"vnf_platform":str(json.loads(request.form.get('json'))['vnf_platform'])})
     print args
     f = request.files['file']
     vnfp_path = '/tmp/' + f.filename
