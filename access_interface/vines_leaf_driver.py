@@ -11,14 +11,14 @@ from util import *
 # General methods
 #------------------------------------------------------------------
 def vnf_status(args):
-	cmd = _build_cmd(_create_url(find_by_key(args,"vnf_ip"), "emsstatus"))
+	cmd = _build_cmd("GET", _create_url(find_by_key(args,"vnf_ip"), "emsstatus"))
 	response = run_vnf_request_cmd(args, cmd)
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not get vnf status"}
 	return {'status':'success','data':response}
 
 def nf_status(args):
-	cmd = _build_cmd(_create_url(find_by_key(args,"vnf_ip"), "running"))
+	cmd = _build_cmd("GET", _create_url(find_by_key(args,"vnf_ip"), "running"))
 	response = run_vnf_request_cmd(args, cmd)
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not get network function status"}
@@ -43,28 +43,28 @@ def push_vnfp(args):
 	return {'status':'success','data':response}
 
 def install(args):
-	cmd = _build_cmd(_create_url(find_by_key(args,"vnf_ip"), "install"))
+	cmd = _build_cmd("POST", _create_url(find_by_key(args,"vnf_ip"), "install"))
 	response = run_vnf_request_cmd(args, cmd)
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not install function"}
 	return {'status':'success','data':response}
 
 def start(args):
-	cmd = _build_cmd(_create_url(find_by_key(args,"vnf_ip"), "start"))
+	cmd = _build_cmd("POST", _create_url(find_by_key(args,"vnf_ip"), "start"))
 	response = run_vnf_request_cmd(args, cmd)
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not start function"}
 	return {'status':'success','data':response}
 
 def stop(args):
-	cmd = _build_cmd(_create_url(find_by_key(args,"vnf_ip"), "stop"))
+	cmd = _build_cmd("POST", _create_url(find_by_key(args,"vnf_ip"), "stop"))
 	response = run_vnf_request_cmd(args, cmd)
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not stop function"}
 	return {'status':'success','data':response}
 
 def get_log(args):
-	cmd = _build_cmd(_create_url(find_by_key(args,"vnf_ip"), "log"))
+	cmd = _build_cmd("GET", _create_url(find_by_key(args,"vnf_ip"), "log"))
 	response = run_vnf_request_cmd(args, cmd)
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not get function log"}
@@ -77,7 +77,7 @@ def get_log(args):
 def _create_url(vnf_ip, task):
 	return ''.join(['http://', vnf_ip, ':8000/api/', task])
 
-def _build_cmd(url):
+def _build_cmd(http_method, url):
 	http_header = "--header \"Content-Type: application/json\""
-	curl_cmd = "'curl -X POST %s %s'" % (http_header, url)
+	curl_cmd = "'curl -X %s %s %s'" % (http_method, http_header, url)
 	return curl_cmd
