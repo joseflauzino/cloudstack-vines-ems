@@ -42,13 +42,11 @@ def vnf_status():
     args.append({"router_ip":request.json['router_ip']})
     args.append({"vnf_platform":request.json['vnf_platform']})
     response = driver_controller.handle_call("vnf_status",args)
-    print "Response Status: %s" % response["status"]
-    print "Response Data: %s" % response["data"]
     if response["status"] == "ERROR":
         return {'status':'error','data':"could not get the VNF status"}
     if response["data"] != "Running":
         return {'status':'error','data':"could not get the VNF status"}
-    return {'status':'success','data':response["data"][0]}
+    return {'status':'success','data':response["data"]}
 
 @app.route('/api/lifecycle/status', methods=['POST'])
 def nf_status():

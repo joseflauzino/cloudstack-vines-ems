@@ -11,20 +11,16 @@ ssh_port = "3922"
 def run_shell_cmd(cmd):
 	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 	output, error = process.communicate()
-	print "Returned code: %s" % process.returncode
 	if process.returncode != 0:
-		print "Shell error"
 		return {"status":"ERROR","data":output}
 	output = output.rstrip("\n")
 	if output == "":
 		output = "None"
-	print "Shell ok"
 	return {"status":"OK","data":output}
 
 def build_ssh_cmd(router_ip, cmd):
 	http_header = "--header \"Content-Type: application/json\""
 	ssh_cmd = "ssh %s %s -p %s %s" % (ssh_key, router_ip, ssh_port, cmd)
-	print ssh_cmd
 	return ssh_cmd
 
 def run_vnf_request_cmd(args, cmd):
