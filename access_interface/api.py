@@ -40,7 +40,8 @@ def vnf_status():
     args = []
     args.append({"vnf_ip":request.json['vnf_ip']})
     args.append({"router_ip":request.json['router_ip']})
-    response = driver_controller.handle_call(request.json['vnf_platform'], "vnfstatus",args)
+    args.append({"vnf_platform":request.json['vnf_platform']})
+    response = driver_controller.handle_call("vnfstatus",args)
     if response["status"] == "ERROR":
         return {'status':'error','data':"could not get the VNF status"}
     if response["data"][0] != "Running":
@@ -52,6 +53,7 @@ def nf_status():
     args = []
     args.append({"vnf_ip":request.json['vnf_ip']})
     args.append({"router_ip":request.json['router_ip']})
+    args.append({"vnf_platform":request.json['vnf_platform']})
     response = driver_controller.handle_call("status",args)
     if response["status"] == "ERROR":
         return {'status':'error','data':"could not get function status"}
@@ -62,6 +64,7 @@ def get_log():
     args = []
     args.append(request.json['vnf_ip'])
     args.append(request.json['router_ip'])
+    args.append({"vnf_platform":request.json['vnf_platform']})
     response = driver_controller.handle_call("getlog",args)
     if response["status"] == "ERROR":
         return {'status':'error','data':"could not get function log"}
