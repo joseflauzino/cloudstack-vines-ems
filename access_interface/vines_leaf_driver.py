@@ -35,6 +35,7 @@ def push_vnfp(args):
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not push vnfp (scp error)"}
 	# Push the VNFP file from router to VNF via HTTP (curl command)
+	http_header = "--header \"Content-Type: application/zip\""
 	curlCmd = "'curl -i -X POST %s --data-binary @/root/%s %s'" % (http_header, vnfp_filename, url)
 	ssh_cmd = "ssh -i /root/.ssh/id_rsa.cloud %s -p 3922 %s" % (router_ip,curlCmd)
 	response = run_shell_cmd(ssh_cmd)
