@@ -57,7 +57,7 @@ def status():
     response = driver_controller.handle_call("status",args)
     if response["status"] == "ERROR":
         return {'status':'error','data':"could not get function status"}
-    return {'status':'success','data':response["data"][0]}
+    return {'status':'success','data':response["data"]}
 
 @app.route('/api/lifecycle/getlog', methods=['POST'])
 def get_log():
@@ -68,7 +68,7 @@ def get_log():
     response = driver_controller.handle_call("get_log",args)
     if response["status"] == "ERROR":
         return {'status':'error','data':"could not get function log"}
-    return {'status':'success','data':response["data"][0]}
+    return {'status':'success','data':response["data"]}
 
 @app.route('/api/lifecycle/stop', methods=['POST'])
 def stop_function():
@@ -78,7 +78,6 @@ def stop_function():
     args.append({"vnf_platform":str(request.json['vnf_platform'])})
     response = driver_controller.handle_call("stop",args)
     if response["status"] == "ERROR":
-        print "ERRO: %s" % response["data"]
         return {'status':'error','data':"could not stop function"}
     return {'status':'success','data':'Function stopped'}
 
@@ -90,7 +89,6 @@ def start_function():
     args.append({"vnf_platform":str(request.json['vnf_platform'])})
     response = driver_controller.handle_call("start",args)
     if response["status"] == "ERROR":
-        print "ERRO: %s" % response["data"]
         return {'status':'error','data':"could not start function"}
     return {'status':'success','data':'Function started'}
 
@@ -102,7 +100,6 @@ def install():
     args.append({"vnf_platform":str(request.json['vnf_platform'])})
     response = driver_controller.handle_call("install",args)
     if response["status"] == "ERROR":
-        print "ERRO: %s" % response["data"]
         return {'status':'error','data':"could not install function"}
     return {'status':'success','data':'Function installed'}
 
