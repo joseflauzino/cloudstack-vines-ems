@@ -12,10 +12,12 @@ def run_shell_cmd(cmd):
 	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 	output, error = process.communicate()
 	if error:
+		print "Shell error"
 		return {"status":"ERROR","data":error}
 	output = output.rstrip("\n")
 	if output == "":
 		output = "None"
+	print "Shell ok"
 	return {"status":"OK","data":output}
 
 def build_ssh_cmd(router_ip, cmd):

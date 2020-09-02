@@ -42,6 +42,8 @@ def vnf_status():
     args.append({"router_ip":request.json['router_ip']})
     args.append({"vnf_platform":request.json['vnf_platform']})
     response = driver_controller.handle_call("vnf_status",args)
+    print "Response Status: %s" % response["status"]
+    print "Response Data: %s" % response["data"]
     if response["status"] == "ERROR":
         return {'status':'error','data':"could not get the VNF status"}
     if response["data"][0] != "Running":
