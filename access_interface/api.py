@@ -41,7 +41,7 @@ def vnf_status():
     args.append({"vnf_ip":request.json['vnf_ip']})
     args.append({"router_ip":request.json['router_ip']})
     args.append({"vnf_platform":request.json['vnf_platform']})
-    response = driver_controller.handle_call("vnfstatus",args)
+    response = driver_controller.handle_call("vnf_status",args)
     if response["status"] == "ERROR":
         return {'status':'error','data':"could not get the VNF status"}
     if response["data"][0] != "Running":
@@ -65,7 +65,7 @@ def get_log():
     args.append(request.json['vnf_ip'])
     args.append(request.json['router_ip'])
     args.append({"vnf_platform":request.json['vnf_platform']})
-    response = driver_controller.handle_call("getlog",args)
+    response = driver_controller.handle_call("get_log",args)
     if response["status"] == "ERROR":
         return {'status':'error','data':"could not get function log"}
     return {'status':'success','data':response["data"][0]}
@@ -117,7 +117,7 @@ def push_vnfp():
     f.save(vnfp_path)
     args.append({"vnfp_path":vnfp_path})
     args.append({"vnfp_filename":f.filename})
-    response = driver_controller.handle_call("pushvnfp",args)
+    response = driver_controller.handle_call("push_vnfp",args)
     if response["status"] == "ERROR":
         return {'status':'error','data':"could not push VNFP"}
     return {'status':'success','data':'VNFP pushed'}
@@ -127,7 +127,7 @@ def push_vnfp():
 #------------------------------------------------------------------
 # VNF configuration
 @app.route('/api/sfc/setsfcforwarding', methods=['POST'])
-def setsfcforwarding():
+def set_sfc_forwarding():
     args = []
     args.append({"vnf_ip":str(request.json['vnf_ip'])})
     args.append({"router_ip":str(request.json['router_ip'])})
@@ -135,20 +135,20 @@ def setsfcforwarding():
     data = request.json['data']
     data = json.dumps(data)
     args.append(data)
-    response = driver_controller.handle_call("setsfcforwarding",args)
+    response = driver_controller.handle_call("set_sfc_forwarding",args)
     if response["status"] == "ERROR":
         return {'status':'error','data':"could not configure VNF"}
     return {'status':'success','data':'Forward rule configured'}
 
 # Router configuration
 @app.route('/api/sfc/setfirstvnf', methods=['POST'])
-def setfirstvnf():
+def set_first_vnf():
     args = []
     args.append({"vnf_ip":str(request.json['last_vnf'])})
     args.append({"router_ip":str(request.json['first_vnf'])})
     args.append({"router_ip":str(request.json['router_ip'])})
     args.append({"vnf_platform":str(request.json['vnf_platform'])})
-    response = driver_controller.handle_call("setfirstvnf",args)
+    response = driver_controller.handle_call("set_first_vnf",args)
     if response["status"] == "ERROR":
         return {'status':'error','data':"could not set first VNF"}
     return {'status':'success','data':'First VNF route configured'}
