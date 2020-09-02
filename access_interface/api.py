@@ -46,7 +46,7 @@ def vnf_status():
     print "Response Data: %s" % response["data"]
     if response["status"] == "ERROR":
         return {'status':'error','data':"could not get the VNF status"}
-    if response["data"][0] != "Running":
+    if response["data"] != "Running":
         return {'status':'error','data':"could not get the VNF status"}
     return {'status':'success','data':response["data"][0]}
 
