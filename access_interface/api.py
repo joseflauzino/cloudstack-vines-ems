@@ -109,9 +109,10 @@ def install():
 @app.route('/api/lifecycle/pushvnfp', methods=['POST'])
 def push_vnfp():
     args = []
-    args.append({"vnf_ip":str(request.json['vnf_ip'])})
-    args.append({"router_ip":str(request.json['router_ip'])})
-    args.append({"vnf_platform":str(request.json['vnf_platform'])})
+    args.append({"vnf_ip":str(json.loads(request.form.get('json'))['vnf_ip'])})
+    args.append({"router_ip":str(json.loads(request.form.get('json'))['router_ip'])})
+    args.append({"vnf_platform":str(json.loads(request.form.get('json'))['router_ip'])})
+    print args
     f = request.files['file']
     vnfp_path = '/tmp/' + f.filename
     f.save(vnfp_path)
