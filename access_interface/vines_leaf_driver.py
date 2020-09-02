@@ -17,7 +17,7 @@ def vnf_status(args):
 		return {'status':'error','data':"could not get vnf status"}
 	return {'status':'success','data':response["data"]}
 
-def nf_status(args):
+def status(args):
 	cmd = _build_cmd("GET", _create_url(find_by_key(args,"vnf_ip"), "running"))
 	response = run_vnf_request_cmd(args, cmd)
 	if response["status"] == "ERROR":

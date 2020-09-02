@@ -49,7 +49,7 @@ def vnf_status():
     return {'status':'success','data':response["data"]}
 
 @app.route('/api/lifecycle/status', methods=['POST'])
-def nf_status():
+def status():
     args = []
     args.append({"vnf_ip":request.json['vnf_ip']})
     args.append({"router_ip":request.json['router_ip']})
