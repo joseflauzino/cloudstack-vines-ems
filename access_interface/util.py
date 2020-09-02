@@ -30,7 +30,7 @@ def build_ssh_cmd(router_ip, cmd):
 def run_vnf_request_cmd(args, cmd):
 	router_ip = find_by_key(args,"router_ip")
 	ssh_cmd = build_ssh_cmd(router_ip, cmd)
-	return run_shell_cmd(cmd)
+	return run_shell_cmd(ssh_cmd)
 
 def find_by_key(array, key):
 	for d in array:
