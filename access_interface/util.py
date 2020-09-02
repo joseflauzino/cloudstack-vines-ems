@@ -10,7 +10,7 @@ ssh_port = "3922"
 
 def run_shell_cmd(cmd):
 	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-	output, error = process.communicate()
+	output, error = process.communicate(timeout=2)
 	print "Returned code: %s" % process.returncode
 	if process.returncode != 0:
 		print "Shell error"
