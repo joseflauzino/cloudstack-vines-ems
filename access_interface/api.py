@@ -38,9 +38,9 @@ def ems_status():
 @app.route('/api/lifecycle/vnfstatus', methods=['POST'])
 def vnf_status():
     args = []
-    args.append({"vnf_ip":request.json['vnf_ip']})
-    args.append({"router_ip":request.json['router_ip']})
-    args.append({"vnf_platform":request.json['vnf_platform']})
+    args.append({"vnf_ip":str(request.json['vnf_ip'])})
+    args.append({"router_ip":str(request.json['router_ip'])})
+    args.append({"vnf_platform":str(request.json['vnf_platform'])})
     print "args: %s" % args
     response = driver_controller.handle_call("vnf_status",args)
     if response["status"] == "ERROR":
@@ -52,9 +52,9 @@ def vnf_status():
 @app.route('/api/lifecycle/status', methods=['POST'])
 def status():
     args = []
-    args.append({"vnf_ip":request.json['vnf_ip']})
-    args.append({"router_ip":request.json['router_ip']})
-    args.append({"vnf_platform":request.json['vnf_platform']})
+    args.append({"vnf_ip":str(request.json['vnf_ip'])})
+    args.append({"router_ip":str(request.json['router_ip'])})
+    args.append({"vnf_platform":str(request.json['vnf_platform'])})
     response = driver_controller.handle_call("status",args)
     if response["status"] == "ERROR":
         return {'status':'error','data':"could not get function status"}
@@ -63,9 +63,9 @@ def status():
 @app.route('/api/lifecycle/getlog', methods=['POST'])
 def get_log():
     args = []
-    args.append(request.json['vnf_ip'])
-    args.append(request.json['router_ip'])
-    args.append({"vnf_platform":request.json['vnf_platform']})
+    args.append({"vnf_ip":str(request.json['vnf_ip'])})
+    args.append({"router_ip":str(request.json['router_ip'])})
+    args.append({"vnf_platform":str(request.json['vnf_platform'])})
     response = driver_controller.handle_call("get_log",args)
     if response["status"] == "ERROR":
         return {'status':'error','data':"could not get function log"}
