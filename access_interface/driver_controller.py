@@ -19,7 +19,8 @@ class DriverController():
 		# necessary to insert '_driver.py' in the names of the driver files
 		drivers_names = []
 		for currentFolder, subFolder, files in os.walk("."):
-			drivers_names = [os.path.join(file.replace(".py","")) for file in files if file.endswith("_driver.py")]
+			drivers_names = [os.path.join(file.replace(".py","")) for file in files if file.endswith("-driver.py")]
+		print "Drivers names: %s" % drivers_names
 		return drivers_names
 
 	def _import_drivers(self, drivers_names):
