@@ -29,6 +29,8 @@ class DriverController():
 		return drivers
 
 	def _search_driver(self, drivers, driver_type):
+		print "Drivers: %s" % drivers
+		print "Driver type: %s" % driver_type
 		for driver in drivers:
 			if driver.__name__ == driver_type:
 				return driver
@@ -45,6 +47,7 @@ class DriverController():
 	def handle_call(self, method_name, args):
 		# instantiate the correct driver and method
 		print "Driver: %s" % self._find_by_key(args,'vnf_platform')
+		print "Method_name: %s" % method_name
 		method = getattr(self._search_driver(self.drivers, self._find_by_key(args,'vnf_platform')), method_name)
 		# call the method
 		return method(args)
