@@ -28,6 +28,11 @@ def run_vnf_request_cmd(args, cmd):
 	ssh_cmd = build_ssh_cmd(router_ip, cmd)
 	return run_shell_cmd(ssh_cmd)
 
+# For local test
+def run_local_vnf_request_cmd(args, cmd):
+	print cmd.strip("'")
+	return run_shell_cmd(cmd.strip("'"))
+
 def find_by_key(array, key):
 	for d in array:
 		for current_key, current_value in d.items():

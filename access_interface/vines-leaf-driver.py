@@ -73,7 +73,7 @@ def get_log(args):
 
 
 #------------------------------------------------------------------
-# Vines-Leaf specific method
+# Vines-Leaf specific methods
 #------------------------------------------------------------------
 def _create_url(vnf_ip, task):
 	return ''.join(['http://', vnf_ip, ':8000/api/', task])
