@@ -8,6 +8,7 @@ from subprocess import Popen, PIPE, check_output, call
 from driver_controller import *
 from util import *
 import sys
+from management_agent import *
 
 #==================================================================
 #                 Vines - Element Management System          
@@ -20,6 +21,7 @@ import sys
 #------------------------------------------------------------------
 reload(sys)  
 sys.setdefaultencoding('latin1')
+ma = ManagementAgentClient()
 app = Eve()
 driver_controller = DriverController()
 
