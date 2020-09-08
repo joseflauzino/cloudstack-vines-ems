@@ -124,28 +124,32 @@ def push_vnfp():
 #------------------------------------------------------------------
 # VNF configuration
 @app.route('/api/sfc/setsfcforwarding', methods=['POST'])
-def set_sfc_forwarding():
-    args = []
-    args.append({"vnf_ip":str(request.json['vnf_ip'])})
-    args.append({"router_ip":str(request.json['router_ip'])})
-    args.append({"vnf_platform":str(request.json['vnf_platform'])})
+def setsfcforwarding():
+    vnf_platform = str(request.json['vnf_platform'])
+    if vnf_platform != "vines-leaf-driver":
+        return {'status':'error','data':"could not configure VNF. Unsupported VNF Platform"}
+    router_ip = request.json['router_ip']
+    vnf_ip = request.json['vnf_ip']
     data = request.json['data']
     data = json.dumps(data)
-    args.append(data)
-    response = driver_controller.handle_call("set_sfc_forwarding",args)
+    http_header = "--header \"Content-Type: application/json\""
+    url = ma.setsfcforwarding(vnf_ip)
+    set_sfc_forwarding_cmd = "'curl -X POST %s --data' \"'\" '%s' \"'\" '%s'" % (http_header,data,url)
+    ssh_cmd = "ssh -i /root/.ssh/id_rsa.cloud %s -p 3922 %s" % (router_ip,set_sfc_forwarding_cmd)
+    response = run_ssh_cmd(ssh_cmd)
     if response["status"] == "ERROR":
         return {'status':'error','data':"could not configure VNF"}
     return {'status':'success','data':'Forward rule configured'}
 
-# Router configuration
+# Router
 @app.route('/api/sfc/setfirstvnf', methods=['POST'])
-def set_first_vnf():
-    args = []
-    args.append({"vnf_ip":str(request.json['last_vnf'])})
-    args.append({"router_ip":str(request.json['first_vnf'])})
-    args.append({"router_ip":str(request.json['router_ip'])})
-    args.append({"vnf_platform":str(request.json['vnf_platform'])})
-    response = driver_controller.handle_call("set_first_vnf",args)
+def setfirstvnf():
+    last_vnf = request.json['last_vnf']
+    first_vnf = request.json['first_vnf']
+    router_ip = request.json['router_ip']
+    set_first_vnf_cmd = "ip route add %s via %s" % (last_vnf,first_vnf)
+    ssh_cmd = 'ssh -i /root/.ssh/id_rsa.cloud %s -p 3922 \'%s\'' % (router_ip,set_first_vnf_cmd)
+    response = run_ssh_cmd(ssh_cmd)
     if response["status"] == "ERROR":
         return {'status':'error','data':"could not set first VNF"}
     return {'status':'success','data':'First VNF route configured'}
