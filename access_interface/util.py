@@ -19,7 +19,6 @@ def run_shell_cmd(cmd):
 	return {"status":"OK","data":output}
 
 def build_ssh_cmd(router_ip, cmd):
-	http_header = "--header \"Content-Type: application/json\""
 	ssh_cmd = "ssh %s %s -p %s %s" % (ssh_key, router_ip, ssh_port, cmd)
 	return ssh_cmd
 
