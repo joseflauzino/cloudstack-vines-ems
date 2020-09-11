@@ -12,9 +12,9 @@ def socket_obj_factory(long_timeout, origin_ip, origin_port, destination_ip, des
 	socketAgent = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 	socketAgent.bind((origin_ip, origin_port))
 	if long_timeout == True:
-		socketAgent.settimeout(10)
-	else:
 		socketAgent.settimeout(5)
+	else:
+		socketAgent.settimeout(2)
 	socketAddr = (destination_ip, destination_port)
 	return (socketAddr,socketAgent)
 
