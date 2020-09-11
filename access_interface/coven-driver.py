@@ -14,7 +14,7 @@ def vnf_status(args):
 	response = run_local_vnf_request_cmd(args, _build_cmd("platform_status", args))
 	print "Response: %s" % response
 	if response["status"] != "ERROR":
-		response_code, response_data = handle_response(response)
+		response_code, response_data = handle_response(response["data"])
 		if response_code != "200":
 			return {'status':'error','data':response_data}
 		return {'status':'success','data':response_data}
@@ -25,7 +25,7 @@ def status(args):
 	response = run_local_vnf_request_cmd(args, _build_cmd("status", args))
 	print response
 	if response["status"] != "ERROR":
-		response_code, response_data = handle_response(response)
+		response_code, response_data = handle_response(response["data"])
 		if response_code != "200":
 			return {'status':'error','data':response_data}
 		if response_data == "On":
@@ -49,7 +49,7 @@ def push_vnfp(args):
 	response = run_local_vnf_request_cmd(args, _build_cmd("install", args))
 	print response
 	if response["status"] != "ERROR":
-		response_code, response_data = handle_response(response)
+		response_code, response_data = handle_response(response["data"])
 		if response_code != "200":
 			return {'status':'error','data':response_data}
 		return {'status':'success','data':response_data}
@@ -64,7 +64,7 @@ def start(args):
 	response = run_local_vnf_request_cmd(args, _build_cmd("start", args))
 	print response
 	if response["status"] != "ERROR":
-		response_code, response_data = handle_response(response)
+		response_code, response_data = handle_response(response["data"])
 		if response_code != "200":
 			return {'status':'error','data':response_data}
 		return {'status':'success','data':response_data}
@@ -75,7 +75,7 @@ def stop(args):
 	response = run_local_vnf_request_cmd(args, _build_cmd("stop", args))
 	print response
 	if response["status"] != "ERROR":
-		response_code, response_data = handle_response(response)
+		response_code, response_data = handle_response(response["data"])
 		if response_code != "200":
 			return {'status':'error','data':response_data}
 		return {'status':'success','data':response_data}
