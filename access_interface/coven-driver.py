@@ -11,19 +11,28 @@ from util import *
 #==================================================================
 
 def vnf_status(args):
-	response = run_local_vnf_request_cmd(args, _build_cmd("status", args))
+	response = run_local_vnf_request_cmd(args, _build_cmd("platform_status", args))
 	print response
-	if response["status"] == "success":
-		if response["data"] == "On":
-			return {'status':'success','data':"Running"}
-		else:
-			return {'status':'success','data':"Stopped"}
+	if response["status"] != "ERROR":
+		response_code, response_data = handle_response(response)
+		if response_code != "200":
+			return {'status':'error','data':response_data}
+		return {'status':'success','data':response_data}
 	return {'status':'error','data':"could not get the VNF status"}
 
 
-
 def status(args):
-	return {'status':'error','data':'method unavailable'}
+	response = run_local_vnf_request_cmd(args, _build_cmd("status", args))
+	print response
+	if response["status"] != "ERROR":
+		response_code, response_data = handle_response(response)
+		if response_code != "200":
+			return {'status':'error','data':response_data}
+		if response_data == "On":
+			return {'status':'success','data':"Running"}
+		else: # status is Off
+			return {'status':'success','data':"Stopped"}
+	return {'status':'error','data':"could not get the function status"}
 
 
 def push_vnfp(args):
@@ -39,9 +48,12 @@ def push_vnfp(args):
 	# Push the VNFP zip file from the router to the VNF using the socket_curl.py file
 	response = run_local_vnf_request_cmd(args, _build_cmd("install", args))
 	print response
-	if response["status"] == "ERROR":
-		return {'status':'error','data':"could not push the VNFP"}
-	return {'status':'success','data':response["data"]}
+	if response["status"] != "ERROR":
+		response_code, response_data = handle_response(response)
+		if response_code != "200":
+			return {'status':'error','data':response_data}
+		return {'status':'success','data':response_data}
+	return {'status':'error','data':"could not push the VNFP"}
 
 
 def install(args):
@@ -51,17 +63,23 @@ def install(args):
 def start(args):
 	response = run_local_vnf_request_cmd(args, _build_cmd("start", args))
 	print response
-	if response["status"] == "ERROR":
-		return {'status':'error','data':"could not start the network function"}
-	return {'status':'success','data':response["data"]}
+	if response["status"] != "ERROR":
+		response_code, response_data = handle_response(response)
+		if response_code != "200":
+			return {'status':'error','data':response_data}
+		return {'status':'success','data':response_data}
+	return {'status':'error','data':"could not start the network function"}
 
 
 def stop(args):
 	response = run_local_vnf_request_cmd(args, _build_cmd("stop", args))
 	print response
-	if response["status"] == "ERROR":
-		return {'status':'error','data':"could not stop the network function"}
-	return {'status':'success','data':response["data"]}
+	if response["status"] != "ERROR":
+		response_code, response_data = handle_response(response)
+		if response_code != "200":
+			return {'status':'error','data':response_data}
+		return {'status':'success','data':response_data}
+	return {'status':'error','data':"could not stop the network function"}
 
 
 #------------------------------------------------------------------
@@ -79,3 +97,10 @@ def _build_cmd(operation, args):
 	cmd = "python socket_curl.py %s %s %s %s \"%s\" %s" % (
 		origin_ip, origin_port, find_by_key(args,"vnf_ip"), destination_port, operation, zip_file_path)
 	return cmd
+
+def handle_response(data):
+	data = str(data.decode("utf-8"))
+	data = data.split("|")
+	response_code = data[0]
+	response_data = data[1]
+	return (response_code, response_data)

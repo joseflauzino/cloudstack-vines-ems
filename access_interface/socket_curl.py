@@ -5,17 +5,12 @@ import sys
 import socket
 
 # set of the methods offered by the COVEN platform
-valid_methods = ["configure","install","start","stop","status","reset","off"]
-
-def print_response(data):
-	data = str(data.decode("utf-8"))
-	code = data.split("[")[1][:3]
-	print code # Returns only the response code. Ex: 200
+valid_methods = ["platform_status","configure","install","start","stop","status","reset","off","close"]
 
 
 def socket_obj_factory(long_timeout, origin_ip, origin_port, destination_ip, destination_port):
 	socketAgent = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-	socketAgent.bind((origin_ip, destination_port))
+	socketAgent.bind((origin_ip, origin_port))
 	if long_timeout == True:
 		socketAgent.settimeout(10)
 	else:
@@ -42,8 +37,8 @@ def send_socket_request_with_payload(origin_ip, origin_port, destination_ip, des
 		try:
 			response, client = socketAgent.recvfrom(origin_port)
 		except:
-			response = "<Response [500]>" # returns a 500 code to represent any server error. TODO: try to get the actual error code
-		sys.exit(print_response(response))
+			response = "500|Internal error" # returns a 500 code to represent any server error. TODO: try to get the actual error code
+		sys.exit(response)
 	else: # any method different of 'install' is rejected
 		sys.exit(help(1))
 
@@ -56,8 +51,8 @@ def send_socket_request(origin_ip, origin_port, destination_ip, destination_port
 	try:
 		response, client = socketAgent.recvfrom(origin_port)
 	except:
-		response = "<Response [500]>" # returns a 500 code to represent any server error. TODO: try to get the actual error code
-	sys.exit(print_response(response))
+		response = "500|Internal error" # returns a 500 code to represent any server error. TODO: try to get the actual error code
+	sys.exit(response)
 
 
 def help(error_type):

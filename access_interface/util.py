@@ -16,7 +16,7 @@ def run_shell_cmd(cmd):
 	output = output.rstrip("\n")
 	if output == "":
 		output = "None"
-	return {"status":"OK","data":output}
+	return {"status":"SUCCESS","data":output}
 
 def build_ssh_cmd(router_ip, cmd):
 	ssh_cmd = "ssh %s %s -p %s %s" % (ssh_key, router_ip, ssh_port, cmd)
