@@ -10,9 +10,8 @@ ssh_port = "3922"
 
 def run_shell_cmd(cmd):
 	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-	output, error = process.communicate()
+	output = process.communicate()
 	print "Output:%s" % output
-	print "error:%s" % error
 	if process.returncode != 0:
 		print "Error on command"
 		return {"status":"ERROR","data":output}
