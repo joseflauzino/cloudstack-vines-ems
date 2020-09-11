@@ -17,7 +17,7 @@ def vnf_status(args):
 		return {'status':'success','data':"Running"}
 	if response["data"] != "Off": # likelly the VM is starting
 		# Try to push the socket_curl.py file to the router via SCP
-		scp_cmd = "scp -i /root/.ssh/id_rsa.cloud -P 3922 %s root@%s:/root/" % ("socket_curl.py",router_ip)
+		scp_cmd = "scp -i /root/.ssh/id_rsa.cloud -P 3922 %s root@%s:/root/" % ("socket_curl.py",find_by_key(args,"router_ip"))
 		response = run_shell_cmd(scp_cmd)
 		print "Push socket_curl: %s" % response
 	return {'status':'error','data':"could not get the VNF status"}
