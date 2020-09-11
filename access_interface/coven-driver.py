@@ -99,6 +99,8 @@ def _build_cmd(operation, args):
 	return cmd
 
 def handle_response(data):
+	print "Data: %s" % data
+	print "Data: %s" % type(data)
 	data = str(data)
 	data = data.split("|")
 	response_code = data[0]
