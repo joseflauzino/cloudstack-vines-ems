@@ -38,7 +38,8 @@ def send_socket_request_with_payload(origin_ip, origin_port, destination_ip, des
 			response, client = socketAgent.recvfrom(origin_port)
 		except:
 			response = "500|Internal error" # returns a 500 code to represent any server error. TODO: try to get the actual error code
-		sys.exit(response)
+		#sys.exit(response)
+		print response
 	else: # any method different of 'install' is rejected
 		sys.exit(help(1))
 
@@ -52,7 +53,8 @@ def send_socket_request(origin_ip, origin_port, destination_ip, destination_port
 		response, client = socketAgent.recvfrom(origin_port)
 	except:
 		response = "500|Internal error" # returns a 500 code to represent any server error. TODO: try to get the actual error code
-	sys.exit(response)
+	#sys.exit(response)
+	print response
 
 
 def help(error_type):
