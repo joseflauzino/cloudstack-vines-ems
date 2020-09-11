@@ -11,15 +11,13 @@ from util import *
 #==================================================================
 
 def vnf_status(args):
-	response = run_vnf_request_cmd(args, _build_cmd("status", args))
+	response = run_local_vnf_request_cmd(args, _build_cmd("status", args))
 	print response
-	if response["status"] == "success" and response["data"] == "On":
-		return {'status':'success','data':"Running"}
-	if response["data"] != "Off": # likelly the VM is starting
-		# Try to push the socket_curl.py file to the router via SCP
-		scp_cmd = "scp -i /root/.ssh/id_rsa.cloud -P 3922 %s root@%s:/root/" % ("socket_curl.py",find_by_key(args,"router_ip"))
-		response = run_shell_cmd(scp_cmd)
-		print "Push socket_curl: %s" % response
+	if response["status"] == "success":
+		if response["data"] == "On":
+			return {'status':'success','data':"Running"}
+		else:
+			return {'status':'success','data':"Stopped"}
 	return {'status':'error','data':"could not get the VNF status"}
 
 
@@ -39,8 +37,7 @@ def push_vnfp(args):
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not push the VNFP (scp error)"}
 	# Push the VNFP zip file from the router to the VNF using the socket_curl.py file
-	response = run_vnf_request_cmd(args, _build_cmd("install", args))
-	#response = run_local_vnf_request_cmd(args, _build_cmd("install", args))
+	response = run_local_vnf_request_cmd(args, _build_cmd("install", args))
 	print response
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not push the VNFP"}
@@ -52,7 +49,7 @@ def install(args):
 
 
 def start(args):
-	response = run_vnf_request_cmd(args, _build_cmd("start", args))
+	response = run_local_vnf_request_cmd(args, _build_cmd("start", args))
 	print response
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not start the network function"}
@@ -60,7 +57,7 @@ def start(args):
 
 
 def stop(args):
-	response = run_vnf_request_cmd(args, _build_cmd("stop", args))
+	response = run_local_vnf_request_cmd(args, _build_cmd("stop", args))
 	print response
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not stop the network function"}
