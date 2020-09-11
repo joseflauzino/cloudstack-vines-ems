@@ -15,7 +15,7 @@ def print_response(data):
 
 def socket_obj_factory(long_timeout, origin_ip, origin_port, destination_ip, destination_port):
 	socketAgent = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-	socketAgent.bind((origin_ip, origin_port))
+	socketAgent.bind((origin_ip, destination_port))
 	if long_timeout == True:
 		socketAgent.settimeout(10)
 	else:
