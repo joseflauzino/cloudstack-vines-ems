@@ -12,7 +12,7 @@ from util import *
 
 def vnf_status(args):
 	response = run_local_vnf_request_cmd(args, _build_cmd("platform_status", args))
-	print response
+	print "Response: %s" % response
 	if response["status"] != "ERROR":
 		response_code, response_data = handle_response(response)
 		if response_code != "200":

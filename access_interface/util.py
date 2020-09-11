@@ -12,6 +12,7 @@ def run_shell_cmd(cmd):
 	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 	output, error = process.communicate()
 	if process.returncode != 0:
+		print "Error on command"
 		return {"status":"ERROR","data":output}
 	output = output.rstrip("\n")
 	if output == "":
