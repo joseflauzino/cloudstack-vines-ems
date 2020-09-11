@@ -19,7 +19,7 @@ def socket_obj_factory(long_timeout, origin_ip, origin_port, destination_ip, des
 	if long_timeout == True:
 		socketAgent.settimeout(10)
 	else:
-		socketAgent.settimeout(3)
+		socketAgent.settimeout(5)
 	socketAddr = (destination_ip, destination_port)
 	return (socketAddr,socketAgent)
 
