@@ -67,6 +67,7 @@ def stop(args):
 #------------------------------------------------------------------
 # COVEN specific methods
 #------------------------------------------------------------------
+origin_ip = "169.254.0.1" # cloud0 IP address (CloudStack's host)
 origin_port = 1024
 destination_port = 12345 # port where the COVEN is listen 
 
@@ -76,5 +77,5 @@ def _build_cmd(operation, args):
 	if operation == "install":
 		zip_file_path = "\"%s\"" % (find_by_key(args,"vnfp_path"))
 	cmd = "python socket_curl.py %s %s %s %s \"%s\" %s" % (
-		find_by_key(args,"router_ip"), origin_port, find_by_key(args,"vnf_ip"), destination_port, operation, zip_file_path)
+		origin_ip, origin_port, find_by_key(args,"vnf_ip"), destination_port, operation, zip_file_path)
 	return cmd
