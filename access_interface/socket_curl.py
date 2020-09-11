@@ -27,10 +27,10 @@ def socket_obj_factory(long_timeout, origin_ip, origin_port, destination_ip, des
 def send_socket_request_with_payload(origin_ip, origin_port, destination_ip, destination_port, method_name, file_path):
 	if method_name == "install":
 		socketAddr, socketAgent = socket_obj_factory(True, origin_ip, origin_port, destination_ip, destination_port)
-		fileName = zip_package_path.replace("\\", "/").split("/")[-1]
-		fileSize = os.path.getsize(zip_package_path)
+		fileName = file_path.replace("\\", "/").split("/")[-1]
+		fileSize = os.path.getsize(file_path)
 		socketAgent.sendto(("package|" + fileName + "|" + str(fileSize)).encode("utf-8"), socketAddr)
-		fileData = open(zip_package_path, "rb")
+		fileData = open(file_path, "rb")
 		fileRead = 0
 		while True:
 			fileMessage = fileData.read(origin_port)

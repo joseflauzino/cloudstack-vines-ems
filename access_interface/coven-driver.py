@@ -24,6 +24,7 @@ def status(args):
 
 
 def push_vnfp(args):
+	"""
 	router_ip = find_by_key(args,"router_ip")
 	vnfp_path = find_by_key(args,"vnfp_path")
 	vnfp_filename = find_by_key(args,"vnfp_filename")
@@ -40,7 +41,9 @@ def push_vnfp(args):
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not push the socket_curl.py file (scp error)"}
 	# Push the VNFP zip file from the router to the VNF using the socket_curl.py file
-	response = run_vnf_request_cmd(args, _build_cmd("install", args))
+	#response = run_vnf_request_cmd(args, _build_cmd("install", args))
+	"""
+	response = run_local_vnf_request_cmd(args, _build_cmd("install", args))
 	print response
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not push the VNFP"}
@@ -77,7 +80,7 @@ def _build_cmd(operation, args):
 	# "python socket_curl.py <origin_ip> <origin_port> <destination_ip> <destination_port> \"<method_name>\" \"zip_file_path\""
 	zip_file_path = ""
 	if operation == "install":
-		zip_file_path = "\"zip_file_path\""
+		zip_file_path = "\"%s\"" % (find_by_key(args,"vnfp_path"))
 	cmd = "python socket_curl.py %s %s %s %s \"%s\" %s" % (
 		find_by_key(args,"router_ip"), origin_port, find_by_key(args,"vnf_ip"), destination_port, operation, zip_file_path)
 	return cmd
