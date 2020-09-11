@@ -12,9 +12,11 @@ from util import *
 
 def vnf_status(args):
 	response = run_vnf_request_cmd(args, _build_cmd("status", args))
-	if response["status"] == "ERROR":
-		return {'status':'error','data':"could not get the VNF status"}
-	return {'status':'success','data':response["data"]}
+	print response
+	if response["status"] == "success" and response["data"] == "On":
+		return {'status':'success','data':"Running"}
+	return {'status':'error','data':"could not get the VNF status"}
+
 
 
 def status(args):
@@ -28,15 +30,18 @@ def push_vnfp(args):
 	# Push the VNFP zip file to router via SCP
 	scp_cmd = "scp -i /root/.ssh/id_rsa.cloud -P 3922 %s root@%s:/root/" % (vnfp_path,router_ip)
 	response = run_shell_cmd(scp_cmd)
+	print response
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not push the VNFP (scp error)"}
 	# Push the socket_curl.py file to the router via SCP
 	scp_cmd = "scp -i /root/.ssh/id_rsa.cloud -P 3922 %s root@%s:/root/" % ("socket_curl.py",router_ip)
 	response = run_shell_cmd(scp_cmd)
+	print response
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not push the socket_curl.py file (scp error)"}
 	# Push the VNFP zip file from the router to the VNF using the socket_curl.py file
 	response = run_vnf_request_cmd(args, _build_cmd("install", args))
+	print response
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not push the VNFP"}
 	return {'status':'success','data':response["data"]}
@@ -48,6 +53,7 @@ def install(args):
 
 def start(args):
 	response = run_vnf_request_cmd(args, _build_cmd("start", args))
+	print response
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not start the network function"}
 	return {'status':'success','data':response["data"]}
@@ -55,6 +61,7 @@ def start(args):
 
 def stop(args):
 	response = run_vnf_request_cmd(args, _build_cmd("stop", args))
+	print response
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not stop the network function"}
 	return {'status':'success','data':response["data"]}
