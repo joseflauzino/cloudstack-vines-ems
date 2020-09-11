@@ -99,7 +99,7 @@ def _build_cmd(operation, args):
 	return cmd
 
 def handle_response(data):
-	data = str(data.decode("utf-8"))
+	data = str(data)
 	data = data.split("|")
 	response_code = data[0]
 	response_data = data[1]
