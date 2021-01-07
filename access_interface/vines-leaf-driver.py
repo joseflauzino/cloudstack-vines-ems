@@ -12,61 +12,53 @@ from util import *
 #------------------------------------------------------------------
 def vnf_status(args):
 	cmd = _build_cmd("GET", _create_url(find_by_key(args,"vnf_ip"), "emsstatus"))
-	response = run_vnf_request_cmd(args, cmd)
+	response = run_local_vnf_request_cmd(args, cmd)
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not get vnf status"}
 	return {'status':'success','data':response["data"]}
 
 def status(args):
 	cmd = _build_cmd("GET", _create_url(find_by_key(args,"vnf_ip"), "running"))
-	response = run_vnf_request_cmd(args, cmd)
+	response = run_local_vnf_request_cmd(args, cmd)
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not get network function status"}
 	return {'status':'success','data':response["data"]}
 
 def push_vnfp(args):
-	router_ip = find_by_key(args,"router_ip")
 	vnfp_path = find_by_key(args,"vnfp_path")
-	vnfp_filename = find_by_key(args,"vnfp_filename")
 	url = _create_url(find_by_key(args,"vnf_ip"), "push_vnfp")
-	# Push the VNFP file to router via SCP
-	scp_cmd = "scp -i /root/.ssh/id_rsa.cloud -P 3922 %s root@%s:/root/" % (vnfp_path,router_ip)
+	# Push the VNFP file to VNF
+	http_header = "--header \"Content-Type: application/zip\""
+	scp_cmd = "curl -i -X POST %s --data-binary @%s %s" % (http_header, vnfp_path, url)
 	response = run_shell_cmd(scp_cmd)
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not push vnfp (scp error)"}
-	# Push the VNFP file from router to VNF via HTTP (curl command)
-	http_header = "--header \"Content-Type: application/zip\""
-	curlCmd = "'curl -i -X POST %s --data-binary @/root/%s %s'" % (http_header, vnfp_filename, url)
-	ssh_cmd = "ssh -i /root/.ssh/id_rsa.cloud %s -p 3922 %s" % (router_ip,curlCmd)
-	response = run_shell_cmd(ssh_cmd)
-	if response["status"] == "ERROR":
-		return {'status':'error','data':"could not push vnfp (ssh error)"}
 	return {'status':'success','data':response["data"]}
 
 def install(args):
 	cmd = _build_cmd("POST", _create_url(find_by_key(args,"vnf_ip"), "install"))
-	response = run_vnf_request_cmd(args, cmd)
+	response = run_local_vnf_request_cmd(args, cmd)
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not install function"}
 	return {'status':'success','data':response["data"]}
 
 def start(args):
 	cmd = _build_cmd("POST", _create_url(find_by_key(args,"vnf_ip"), "start"))
-	response = run_vnf_request_cmd(args, cmd)
+	response = run_local_vnf_request_cmd(args, cmd)
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not start function"}
 	return {'status':'success','data':response["data"]}
 
 def stop(args):
 	cmd = _build_cmd("POST", _create_url(find_by_key(args,"vnf_ip"), "stop"))
-	response = run_vnf_request_cmd(args, cmd)
+	response = run_local_vnf_request_cmd(args, cmd)
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not stop function"}
 	return {'status':'success','data':response["data"]}
 
 def get_log(args):
 	cmd = _build_cmd("GET", _create_url(find_by_key(args,"vnf_ip"), "log"))
-	response = run_vnf_request_cmd(args, cmd)
+	response = run_local_vnf_request_cmd(args, cmd)
 	if response["status"] == "ERROR":
 		return {'status':'error','data':"could not get function log"}
 	return {'status':'success','data':response["data"]}
