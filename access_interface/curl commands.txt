@@ -1,0 +1,46 @@
+#-----------------------------------------------
+# VNFs
+#-----------------------------------------------
+
+# Add new VNF
+curl --header "Content-Type: application/json" \
+--request POST \
+--data '{"vnf_id":"fcb4b154-9be4-4afe-a84a-c19b3747b8bb","vnf_ip":"192.168.122.20","vnf_platform":"vines-leaf"}' \
+http://localhost:9000/v1.0/ems/vnf
+
+# List one VNF
+curl --header "Content-Type: application/json" \
+--request GET \
+http://localhost:9000/v1.0/ems/vnf/fcb4b154-9be4-4afe-a84a-c19b3747b8bb
+
+# List all VNFs
+curl --header "Content-Type: application/json" \
+--request GET \
+http://localhost:9000/v1.0/ems/vnf
+
+# Delete VNF
+curl --header "Content-Type: application/json" \
+--request DELETE \
+http://localhost:9000/v1.0/ems/vnf/fcb4b154-9be4-4afe-a84a-c19b3747b8bb
+
+
+
+#-----------------------------------------------
+# Subscriptions
+#-----------------------------------------------
+
+# Create new subscription (subscribe)
+curl --header "Content-Type: application/json" \
+--request POST \
+--data '{"vnf_id":"fcb4b154-9be4-4afe-a84a-c19b3747b8bb","vnfm_ip":"192.168.122.10"}' \
+http://localhost:9000/v1.0/ems/subscription
+
+# List one subscription
+curl --header "Content-Type: application/json" \
+--request GET \
+http://localhost:9000/v1.0/ems/subscription/<subscription-id>
+
+# Delete subscription (unsubscribe)
+curl --header "Content-Type: application/json" \
+--request DELETE \
+http://localhost:9000/v1.0/ems/subscription/<subscription-id>
