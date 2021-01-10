@@ -1,1 +1,1 @@
-{"vnfs": []}
+{"vnfs": [{"ip": "192.168.122.20", "id": "fcb4b154-9be4-4afe-a84a-c19b3747b8bb", "vnf_exp": "vines-leaf-driver"}, {"ip": "192.168.122.222", "id": "b4abb154-9be4-4afe-a84a-c19b3747b9ca", "vnf_exp": "vines-leaf-driver"}]}

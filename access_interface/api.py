@@ -165,80 +165,66 @@ def ems_subscription_invalid_usage_float(any_float):
 ################### VNF Lifecycle Management #####################
 ##################################################################
 
-@app.route('/v1.0/lifecycle/vnf/status', methods=['GET'])
-def vnf_status():
+@app.route('/v1.0/vnf/isup/<uuid:vnf_id>', methods=['GET'])
+def vnf_exp_status(vnf_id):
     args = []
-    args.append({"vnf_ip":str(request.json['vnf_ip'])})
-    args.append({"router_ip":str(request.json['router_ip'])})
-    args.append({"vnf_platform":str(request.json['vnf_platform'])})
+    args.append({"vnf_id":str(vnf_id)})
     response = driver_controller.handle_call("vnf_status",args)
     if response["status"] == "ERROR":
-        return {'status':'error','data':"Could not get the VNF status"}
+        return {'status':'error','data':"Could not get the VNF-ExP status"}
     if response["data"] != "Running":
-        return {'status':'error','data':"Could not get the VNF status"}
+        return {'status':'error','data':"Could not get the VNF-ExP status"}
     return {'status':'success','data':response["data"]}
 
-@app.route('/v1.0/lifecycle/status', methods=['POST'])
-def status():
+@app.route('/v1.0/vnf/status/<uuid:vnf_id>', methods=['GET'])
+def status(vnf_id):
     args = []
-    args.append({"vnf_ip":str(request.json['vnf_ip'])})
-    args.append({"router_ip":str(request.json['router_ip'])})
-    args.append({"vnf_platform":str(request.json['vnf_platform'])})
+    args.append({"vnf_id":str(vnf_id)})
     response = driver_controller.handle_call("status",args)
     if response["status"] == "ERROR":
         return {'status':'error','data':"Could not get function status"}
     return {'status':'success','data':response["data"]}
 
-@app.route('/v1.0/lifecycle/getlog', methods=['POST'])
-def get_log():
+@app.route('/v1.0/vnf/log/<uuid:vnf_id>', methods=['GET'])
+def get_log(vnf_id):
     args = []
-    args.append({"vnf_ip":str(request.json['vnf_ip'])})
-    args.append({"router_ip":str(request.json['router_ip'])})
-    args.append({"vnf_platform":str(request.json['vnf_platform'])})
+    args.append({"vnf_id":str(vnf_id)})
     response = driver_controller.handle_call("get_log",args)
     if response["status"] == "ERROR":
         return {'status':'error','data':"Could not get function log"}
     return {'status':'success','data':response["data"]}
 
-@app.route('/v1.0/lifecycle/stop', methods=['POST'])
-def stop_function():
+@app.route('/v1.0/vnf/stop/<uuid:vnf_id>', methods=['POST'])
+def stop_function(vnf_id):
     args = []
-    args.append({"vnf_ip":str(request.json['vnf_ip'])})
-    args.append({"router_ip":str(request.json['router_ip'])})
-    args.append({"vnf_platform":str(request.json['vnf_platform'])})
+    args.append({"vnf_id":str(vnf_id)})
     response = driver_controller.handle_call("stop",args)
     if response["status"] == "ERROR":
         return {'status':'error','data':"Could not stop function"}
     return {'status':'success','data':'Function stopped'}
 
-@app.route('/v1.0/lifecycle/start', methods=['POST'])
-def start_function():
+@app.route('/v1.0/vnf/start/<uuid:vnf_id>', methods=['POST'])
+def start_function(vnf_id):
     args = []
-    args.append({"vnf_ip":str(request.json['vnf_ip'])})
-    args.append({"router_ip":str(request.json['router_ip'])})
-    args.append({"vnf_platform":str(request.json['vnf_platform'])})
+    args.append({"vnf_id":str(vnf_id)})
     response = driver_controller.handle_call("start",args)
     if response["status"] == "ERROR":
         return {'status':'error','data':"Could not start function"}
     return {'status':'success','data':'Function started'}
 
-@app.route('/v1.0/lifecycle/install', methods=['POST'])
-def install():
+@app.route('/v1.0/vnf/install/<uuid:vnf_id>', methods=['POST'])
+def install(vnf_id):
     args = []
-    args.append({"vnf_ip":str(request.json['vnf_ip'])})
-    args.append({"router_ip":str(request.json['router_ip'])})
-    args.append({"vnf_platform":str(request.json['vnf_platform'])})
+    args.append({"vnf_id":str(vnf_id)})
     response = driver_controller.handle_call("install",args)
     if response["status"] == "ERROR":
         return {'status':'error','data':"Could not install function"}
     return {'status':'success','data':'Function installed'}
 
-@app.route('/v1.0/lifecycle/pushvnfp', methods=['POST'])
-def push_vnfp():
+@app.route('/v1.0/vnf/pushvnfp/<uuid:vnf_id>', methods=['POST'])
+def push_vnfp(vnf_id):
     args = []
-    args.append({"vnf_ip":str(json.loads(request.form.get('json'))['vnf_ip'])})
-    args.append({"router_ip":str(json.loads(request.form.get('json'))['router_ip'])})
-    args.append({"vnf_platform":str(json.loads(request.form.get('json'))['vnf_platform'])})
+    args.append({"vnf_id":str(vnf_id)})
     f = request.files['file']
     vnfp_path = '/tmp/' + f.filename
     f.save(vnfp_path)

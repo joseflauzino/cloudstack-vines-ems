@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import os
+from base_manager import *
 
 #==================================================================
 #                 Vines - Element Management System
@@ -43,6 +44,14 @@ class DriverController():
 
 	# Public methods
 	def handle_call(self, method_name, args):
+		# find VNF in base
+		vnf_id = self._find_by_key(args,'vnf_id')
+		result = find_vnf(vnf_id)
+		if result["success"] == False:
+			return {'status':'error','data':result["data"]}
+		# add VNF data into args
+		args.append({"vnf_ip":result["data"]["ip"]})
+		args.append({"vnf_platform":result["data"]["vnf_exp"]})
 		# instantiate the correct driver and method
 		method = getattr(self._search_driver(self.drivers, self._find_by_key(args,'vnf_platform')), method_name)
 		# call the method
