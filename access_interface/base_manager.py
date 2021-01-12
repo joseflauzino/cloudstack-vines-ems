@@ -35,7 +35,7 @@ def add_vnf(args):
         save_base("vnf_base",data)
     except Exception as e:
         return {"success":False, "data":"Could not add VNF %s: %s" % (new_vnf,e)}
-    return {"success":True, "data":new_vnf}
+    return {"success":True, "data":"VNF successfully registered"}
 
 def create_subscription(args):
     new_subscription = {"id":str(uuid.uuid4()),"vnf_id":find_arg_by_key(args,"vnf_id"),"vnfm_ip":find_arg_by_key(args,"vnfm_ip")}
@@ -49,7 +49,7 @@ def create_subscription(args):
         save_base("subscription_base",data)
     except Exception as e:
         return {"success":False, "data":"Could not create the subscription %s: %s" % (new_subscription,e)}
-    return {"success":True, "data":new_subscription}
+    return {"success":True, "data":"Registration successful"}
 
 
 #------------------------------------
@@ -87,7 +87,7 @@ def update_vnf(vnf_id,args):
                 save_base("vnf_base",data)
             except Exception as e:
                 return {"success":False, "data":"Could not update VNF %s: %s" % (vnf,e)}
-            return {"success":True, "data":vnf}
+            return {"success":True, "data":"VNF updated successfully"}
     return {"success":False, "data":"Could not find VNF %s to update it" % (vnf_id)}
 
 #------------------------------------
@@ -111,7 +111,7 @@ def delete_vnf(vnf_id=None):
         save_base("vnf_base",data)
     except Exception as e:
         return {"success":False, "data":"Could not remove VNF %s: %s" % (vnf_id,e)}
-    return {"success":True, "data":vnf}
+    return {"success":True, "data":"VNF deleted successfully"}
 
 def delete_subscription(subscription_id):
     result = find_subscription(subscription_id)
@@ -124,4 +124,4 @@ def delete_subscription(subscription_id):
         save_base("subscription_base",data)
     except Exception as e:
         return {"success":False, "data":"Could not remove subscription %s: %s" % (subscription_id,e)}
-    return {"success":True, "data":subscription}
+    return {"success":True, "data":"Successfully unsubscribed"}
