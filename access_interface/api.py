@@ -7,7 +7,6 @@ import requests
 from flask import Flask, request, jsonify
 from driver_controller import *
 from util import *
-import logging
 
 #==================================================================
 #                 Vines - Element Management System          
@@ -39,7 +38,7 @@ def after_request(response):
 #------------------------------------------------------------------
 @app.route('/', methods=['GET'])
 def home_page():
-    logging.warning("This is a warning!")
+    app.logger.info('This is a INFO log!')
     return os.path.dirname(os.path.realpath(__file__))
 
 @app.route('/v1.0/ems/status', methods=['GET'])
