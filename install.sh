@@ -15,7 +15,7 @@ apt -y install apache2 libapache2-mod-wsgi python3-pip
 pip3 install -r requirements.txt
 
 echo "Configuring log"
-sed -i -e "s/^logging.basicConfig.*/logging.basicConfig(filename='/etc/cloudstack-vines-ems/access_interface/api.log', level=logging.INFO)/" access_interface/api.py
+sed -i "s|logging.basicConfig.*|logging.basicConfig(filename='/etc/cloudstack-vines-ems/access_interface/api.log', level=logging.INFO)|g" access_interface/api.py
 
 echo "Creating the Vines EMS directory"
 mkdir /etc/cloudstack-vines-ems/
