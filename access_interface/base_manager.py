@@ -7,11 +7,11 @@ import uuid
 # Util
 #------------------------------------
 def _read_base(base_name):
-    base_path = "%s.json" % (base_name)
+    base_path = "%s/%s.json" % (os.path.dirname(os.path.realpath(__file__)),base_name)
     return json.loads(open(base_path, 'r').read())
 
 def save_base(base_name, data):
-    base_path = "%s.json" % (base_name)
+    base_path = "%s/%s.json" % (os.path.dirname(os.path.realpath(__file__)),base_name)
     open(base_path, 'w+').write(json.dumps(data))
 
 def find_arg_by_key(array, key):
