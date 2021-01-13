@@ -14,11 +14,11 @@ import json
 import requests
 from flask import Flask, request
 print("API current path: "+os.path.dirname(os.path.realpath(__file__)))
-from driver_controller import *
+from access_interface.driver_controller import *
 from util import *
 
 
-logging.basicConfig(filename='api.log', level=logging.INFO)
+#logging.basicConfig(filename='api.log', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
