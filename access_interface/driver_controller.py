@@ -11,6 +11,7 @@ import os
 import sys
 currentdir = os.path.dirname(os.path.realpath(__file__))
 parentdir = os.path.dirname(currentdir)
+print("Parant dir: "+parentdir)
 sys.path.insert(0,parentdir) 
 from vib_client import *
 
