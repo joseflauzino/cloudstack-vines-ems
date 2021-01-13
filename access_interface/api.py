@@ -7,7 +7,10 @@ import requests
 from flask import Flask, request, jsonify
 from driver_controller import *
 from util import *
+import logging
 
+logging.basicConfig(filename='/var/log/apache/ems.log', level=logging.INFO)
+logger = logging.getLogger(__name__)
 #==================================================================
 #                 Vines - Element Management System          
 #  Module: Access Interface                             
@@ -38,7 +41,7 @@ def after_request(response):
 #------------------------------------------------------------------
 @app.route('/', methods=['GET'])
 def home_page():
-    app.logger.info('This is a INFO log!')
+    logger.info('This is a INFO log!')
     return os.path.dirname(os.path.realpath(__file__))
 
 @app.route('/v1.0/ems/status', methods=['GET'])
