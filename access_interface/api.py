@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import sys
 import json
 import requests
@@ -35,6 +36,10 @@ def after_request(response):
 #------------------------------------------------------------------
 # EMS
 #------------------------------------------------------------------
+@app.route('/', methods=['GET'])
+def home_page():
+    return os.path.dirname(os.path.realpath(__file__))
+
 @app.route('/v1.0/ems/status', methods=['GET'])
 def ems_status():
     return jsonify({'status':'success','data':'Running'})
