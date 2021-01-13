@@ -62,17 +62,17 @@ def ems_vnfs():
         args.append({"vnf_id":str(request.json['vnf_id'])})
         args.append({"vnf_ip":str(request.json['vnf_ip'])})
         args.append({"vnf_platform":str(request.json['vnf_platform'])})
-        response = add_vnf(args)
+        response = vib_client.add_vnf(args)
         if response["success"] == False:
             return {'status':'error','data':"Could not register the VNF %s" % (response["data"])}
     # Return info about all VNFs
     if request.method == 'GET':
-        response = find_vnf()
+        response = vib_client.find_vnf()
         if response["success"] == False:
             return {'status':'error','data':response["data"]}
     # Delete all VNFs
     if request.method == 'DELETE':
-        response = delete_vnf()
+        response = vib_client.delete_vnf()
         if response["success"] == False:
             return {'status':'error','data':"Could not delete all VNFs"}
     return {'status':'success','data':response["data"]}
@@ -81,7 +81,7 @@ def ems_vnfs():
 def ems_vnf(vnf_id):
     # Return info about a given VNF
     if request.method == 'GET':
-        response = find_vnf(str(vnf_id))
+        response = vib_client.find_vnf(str(vnf_id))
         if response["success"] == False:
             return {'status':'error','data':response["data"]}
     # Update a given VNF
@@ -100,12 +100,12 @@ def ems_vnf(vnf_id):
                 pass #ignore errors
         if at_last_one_param == False:
             return {'status':'error','data':"Could not update the VNF %s. No parameter were given." % (vnf_id)}
-        response = update_vnf(str(vnf_id), args)
+        response = vib_client.update_vnf(str(vnf_id), args)
         if response["success"] == False:
             return {'status':'error','data':"Could not update the VNF %s." % (response["data"])}
     # Delete a VNF
     if request.method == 'DELETE':
-        response = delete_vnf(str(vnf_id))
+        response = vib_client.delete_vnf(str(vnf_id))
         if response["success"] == False:
             return {'status':'error','data':"Could not delete the VNF %s" % (response["data"])}
     return {'status':'success','data':response["data"]}
@@ -133,7 +133,7 @@ def ems_subscriptions():
         args = []
         args.append({"vnfm_ip":str(request.json['vnfm_ip'])}) # IP of the VNFM (CloudStack Management Server IP)
         args.append({"vnf_id":str(request.json['vnf_id'])}) # ID of the VNF that you want to receive notifications
-        response = create_subscription(args)
+        response = vib_client.create_subscription(args)
         if response["success"] == False:
             return {'status':'error','data':response["data"]}
         return {'status':'success','data':response["data"]}
@@ -142,12 +142,12 @@ def ems_subscriptions():
 def ems_subscription(subscription_id):
     # Return info about a given subscription
     if request.method == 'GET':
-        response = find_subscription(str(subscription_id))
+        response = vib_client.find_subscription(str(subscription_id))
         if response["success"] == False:
             return {'status':'error','data':response["data"]}
     # Delete a subscription
     if request.method == 'DELETE':
-        response = delete_subscription(str(subscription_id))
+        response = vib_client.delete_subscription(str(subscription_id))
         if response["success"] == False:
             return {'status':'error','data':"Could not delete the subscription_id %s" % (response["data"])}
     return {'status':'success','data':response["data"]}

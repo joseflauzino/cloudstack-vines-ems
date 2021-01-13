@@ -11,9 +11,8 @@ import os
 import sys
 currentdir = os.path.dirname(os.path.realpath(__file__))
 parentdir = os.path.dirname(currentdir)
-print("Parant dir: "+parentdir)
-sys.path.insert(0,parentdir) 
-from vib_client import *
+sys.path.append(parentdir)
+from vib import vib_client
 
 class DriverController():
 	# Private methods
@@ -51,7 +50,7 @@ class DriverController():
 	def handle_call(self, method_name, args):
 		# find VNF in base
 		vnf_id = self._find_by_key(args,'vnf_id')
-		result = find_vnf(vnf_id)
+		result = vib_client.find_vnf(vnf_id)
 		if result["success"] == False:
 			return {'status':'error','data':result["data"]}
 		# add VNF data into args
