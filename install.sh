@@ -11,7 +11,7 @@ echo " Access Interface installation"
 echo "--------------------------------------"
 echo "Installing requirements"
 apt -y update
-apt -y install apache2 libapache2-mod-wsgi python3-pip
+apt -y install apache2 libapache2-mod-wsgi-py3 python3 python3-pip
 pip3 install -r requirements.txt
 
 echo "Configuring log"
