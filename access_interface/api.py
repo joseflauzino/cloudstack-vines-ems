@@ -1,28 +1,29 @@
-#!/usr/bin/env python
+#! /usr/bin/python3
+# description       : CloudStack Vines EMS - Access Interface Module
+# author            : Jose Flauzino
+# email             : jwvflauzino@inf.ufpr.br
+# date              : 20210113
+# license           : Apache 2.0
+# py version        : 3.6.9
+#==============================================================================
 
 import os
 import sys
+import logging
 import json
 import requests
-from flask import Flask, request, jsonify
+from flask import Flask, request
 from driver_controller import *
 from util import *
-import logging
 
-logging.basicConfig(filename='/etc/cloudstack-vines-ems/access_interface/api.log', level=logging.INFO)
+
+logging.basicConfig(filename='api.log', level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-#==================================================================
-#                 Vines - Element Management System          
-#  Module: Access Interface                             
-#  by Jose Flauzino (jwvflauzino@inf.ufpr.br) 
-#==================================================================
 
 ##################################################################
 ###################### Global definitions ########################
 ##################################################################
-reload(sys)  
-sys.setdefaultencoding('latin1')
 app = Flask(__name__)
 driver_controller = DriverController()
 
@@ -47,7 +48,7 @@ def home_page():
 
 @app.route('/v1.0/ems/status', methods=['GET'])
 def ems_status():
-    return jsonify({'status':'success','data':'Running'})
+    return {'status':'success','data':'Running'}
 
 #------------------------------------------------------------------
 # VNF

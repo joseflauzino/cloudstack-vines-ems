@@ -1,13 +1,21 @@
 #!/bin/bash
+# description       : CloudStack Vines EMS - Installation Script
+# author            : Jose Flauzino
+# email             : jwvflauzino@inf.ufpr.br
+# date              : 20210113
+# license           : Apache 2.0
+#==============================================================================
 
 echo "--------------------------------------"
 echo " Access Interface installation"
 echo "--------------------------------------"
-# Install Apache2 Web Server
+echo"Installing requirements"
 apt -y update
-apt -y install apache2 libapache2-mod-wsgi python-pip
+apt -y install apache2 libapache2-mod-wsgi python3-pip
+pip3 install -r requirements.txt
 
-pip install flask requests
+echo "Configuring log"
+sed -i -e "s/^logging.basicConfig.*/logging.basicConfig(filename='/etc/cloudstack-vines-ems/access_interface/api.log', level=logging.INFO)/" access_interface/api.py
 
 echo "Creating the Vines EMS directory"
 mkdir /etc/cloudstack-vines-ems/

@@ -1,19 +1,20 @@
-#!/usr/bin/env python
-import os,sys
+#! /usr/bin/python3
+# description       : CloudStack Vines EMS - Driver Controller Module
+# author            : Jose Flauzino
+# email             : jwvflauzino@inf.ufpr.br
+# date              : 20210113
+# license           : Apache 2.0
+# py version        : 3.6.9
+#==============================================================================
+
+import os
+import sys
 currentdir = os.path.dirname(os.path.realpath(__file__))
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir) 
 from vib_client import *
 
-#==================================================================
-#                 Vines - Element Management System
-#  Module: Driver Controller                  
-#                                                by Jose Flauzino 
-#==================================================================
-
 class DriverController():
-	"""Driver Controller implementation"""
-
 	# Private methods
 	def __init__(self):
 		self.drivers = self._import_drivers(self._read_drivers()) # load all drivers
@@ -59,4 +60,3 @@ class DriverController():
 		method = getattr(self._search_driver(self.drivers, self._find_by_key(args,'vnf_platform')), method_name)
 		# call the method
 		return method(args)
-		# return format {'status':'success or error','data':'the content data'}

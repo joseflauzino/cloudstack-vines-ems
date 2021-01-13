@@ -1,4 +1,12 @@
-#!/usr/bin/env python
+#! /usr/bin/python3
+# description       : CloudStack Vines EMS - VIB Module
+# author            : Jose Flauzino
+# email             : jwvflauzino@inf.ufpr.br
+# date              : 20210113
+# license           : Apache 2.0
+# py version        : 3.6.9
+#==============================================================================
+
 import os
 import json
 import uuid
