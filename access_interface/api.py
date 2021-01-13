@@ -9,8 +9,9 @@ from driver_controller import *
 from util import *
 import logging
 
-logging.basicConfig(filename='/var/log/apache2/ems.log', level=logging.INFO)
+logging.basicConfig(filename='/etc/cloudstack-vines-ems/access_interface/api.log', level=logging.INFO)
 logger = logging.getLogger(__name__)
+
 #==================================================================
 #                 Vines - Element Management System          
 #  Module: Access Interface                             
