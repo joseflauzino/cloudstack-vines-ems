@@ -3,19 +3,14 @@
 import sys
 import json
 import requests
-from eve import Eve
-from flask import request, jsonify
-from subprocess import Popen, PIPE, check_output, call
+from flask import Flask, request, jsonify
 from driver_controller import *
 from util import *
-from base_manager import *
-from management_agent import *
-
 
 #==================================================================
 #                 Vines - Element Management System          
 #  Module: Access Interface                             
-#                                                by Jose Flauzino 
+#  by Jose Flauzino (jwvflauzino@inf.ufpr.br) 
 #==================================================================
 
 ##################################################################
@@ -23,8 +18,7 @@ from management_agent import *
 ##################################################################
 reload(sys)  
 sys.setdefaultencoding('latin1')
-ma = ManagementAgentClient()
-app = Eve()
+app = Flask(__name__)
 driver_controller = DriverController()
 
 @app.after_request
@@ -235,52 +229,5 @@ def push_vnfp(vnf_id):
         return {'status':'error','data':"Could not push VNFP"}
     return {'status':'success','data':'VNFP pushed'}
 
-
-
-##################################################################
-################## Service Function Chaining #####################
-##################################################################
-
-#------------------------------------------------------------------
-# VNF configuration
-#------------------------------------------------------------------
-
-@app.route('/v1.0/sfc/setsfcforwarding', methods=['POST'])
-def setsfcforwarding():
-    vnf_platform = str(request.json['vnf_platform'])
-    if vnf_platform != "vines-leaf-driver":
-        return {'status':'error','data':"Could not configure VNF. Unsupported VNF Platform"}
-    router_ip = request.json['router_ip']
-    vnf_ip = request.json['vnf_ip']
-    data = request.json['data']
-    data = json.dumps(data)
-    http_header = "--header \"Content-Type: application/json\""
-    url = ma.setsfcforwarding(vnf_ip)
-    set_sfc_forwarding_cmd = "'curl -X POST %s --data' \"'\" '%s' \"'\" '%s'" % (http_header,data,url)
-    ssh_cmd = "ssh -i /root/.ssh/id_rsa.cloud %s -p 3922 %s" % (router_ip,set_sfc_forwarding_cmd)
-    response = run_ssh_cmd(ssh_cmd)
-    if response["status"] == "ERROR":
-        return {'status':'error','data':"Could not configure VNF"}
-    return {'status':'success','data':'Forward rule configured'}
-
-#------------------------------------------------------------------
-# Router configuration
-#------------------------------------------------------------------
-@app.route('/v1.0/sfc/setfirstvnf', methods=['POST'])
-def setfirstvnf():
-    last_vnf = request.json['last_vnf']
-    first_vnf = request.json['first_vnf']
-    router_ip = request.json['router_ip']
-    set_first_vnf_cmd = "ip route add %s via %s" % (last_vnf,first_vnf)
-    ssh_cmd = 'ssh -i /root/.ssh/id_rsa.cloud %s -p 3922 \'%s\'' % (router_ip,set_first_vnf_cmd)
-    response = run_ssh_cmd(ssh_cmd)
-    if response["status"] == "ERROR":
-        return {'status':'error','data':"Could not set first VNF"}
-    return {'status':'success','data':'First VNF route configured'}
-
-def run_api():
-    app.run(debug=False,host='0.0.0.0', port=9000)
-
-# remover depois quando for juntar com o resto do codigo
 if __name__ == '__main__':
-    run_api()
+    app.run()
