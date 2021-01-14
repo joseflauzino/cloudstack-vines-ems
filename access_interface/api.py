@@ -58,7 +58,7 @@ def ems_vnfs():
         args.append({"vnf_platform":str(request.json['vnf_platform'])})
         response = vib_client.add_vnf(args)
         if response["success"] == False:
-            return {'status':'error','message':"Could not register the VNF. "+response["data"]}
+            return {'status':'error','message':response["data"]}
         return {'status':'success','message':'VNF successfully registred','object':response["data"]}
     # Return info about all VNFs
     if request.method == 'GET':
@@ -133,7 +133,7 @@ def ems_subscriptions():
         args.append({"vnf_id":str(request.json['vnf_id'])}) # ID of the VNF that you want to receive notifications
         response = vib_client.create_subscription(args)
         if response["success"] == False:
-            return {'status':'error','data':response["data"]}
+            return {'status':'error','message':response["data"]}
         return {'status':'success','data':response["data"]}
 
 @app.route('/v1.0/ems/subscription/<uuid:subscription_id>', methods=['GET','DELETE'])
@@ -142,12 +142,12 @@ def ems_subscription(subscription_id):
     if request.method == 'GET':
         response = vib_client.find_subscription(str(subscription_id))
         if response["success"] == False:
-            return {'status':'error','data':response["data"]}
+            return {'status':'error','message':response["data"]}
     # Delete a subscription
     if request.method == 'DELETE':
         response = vib_client.delete_subscription(str(subscription_id))
         if response["success"] == False:
-            return {'status':'error','data':"Could not delete the subscription_id %s" % (response["data"])}
+            return {'status':'error','message':response["data"]}
     return {'status':'success','data':response["data"]}
 
 # Handle invalid subscription IDs
@@ -175,9 +175,9 @@ def vnf_exp_status(vnf_id):
     args.append({"vnf_id":str(vnf_id)})
     response = driver_controller.handle_call("vnf_status",args)
     if response["status"] == "ERROR":
-        return {'status':'error','data':"Could not get the VNF-ExP status"}
+        return {'status':'error','message':"Could not get the VNF-ExP status"}
     if response["data"] != "Running":
-        return {'status':'error','data':"Could not get the VNF-ExP status"}
+        return {'status':'error','message':"Could not get the VNF-ExP status"}
     return {'status':'success','data':response["data"]}
 
 @app.route('/v1.0/vnf/status/<uuid:vnf_id>', methods=['GET'])
@@ -186,8 +186,8 @@ def status(vnf_id):
     args.append({"vnf_id":str(vnf_id)})
     response = driver_controller.handle_call("status",args)
     if response["status"] == "ERROR":
-        return {'status':'error','data':"Could not get function status"}
-    return {'status':'success','data':response["data"]}
+        return {'status':'error','message':"Could not get function status"}
+    return {'status':'success','message':response["data"]}
 
 @app.route('/v1.0/vnf/log/<uuid:vnf_id>', methods=['GET'])
 def get_log(vnf_id):
@@ -195,8 +195,8 @@ def get_log(vnf_id):
     args.append({"vnf_id":str(vnf_id)})
     response = driver_controller.handle_call("get_log",args)
     if response["status"] == "ERROR":
-        return {'status':'error','data':"Could not get function log"}
-    return {'status':'success','data':response["data"]}
+        return {'status':'error','message':"Could not get function log"}
+    return {'status':'success','message':response["data"]}
 
 @app.route('/v1.0/vnf/stop/<uuid:vnf_id>', methods=['POST'])
 def stop_function(vnf_id):
@@ -204,8 +204,8 @@ def stop_function(vnf_id):
     args.append({"vnf_id":str(vnf_id)})
     response = driver_controller.handle_call("stop",args)
     if response["status"] == "ERROR":
-        return {'status':'error','data':"Could not stop function"}
-    return {'status':'success','data':'Function stopped'}
+        return {'status':'error','message':"Could not stop function"}
+    return {'status':'success','message':'Function stopped'}
 
 @app.route('/v1.0/vnf/start/<uuid:vnf_id>', methods=['POST'])
 def start_function(vnf_id):
@@ -213,8 +213,8 @@ def start_function(vnf_id):
     args.append({"vnf_id":str(vnf_id)})
     response = driver_controller.handle_call("start",args)
     if response["status"] == "ERROR":
-        return {'status':'error','data':"Could not start function"}
-    return {'status':'success','data':'Function started'}
+        return {'status':'error','message':"Could not start function"}
+    return {'status':'success','message':'Function started'}
 
 @app.route('/v1.0/vnf/install/<uuid:vnf_id>', methods=['POST'])
 def install(vnf_id):
@@ -222,8 +222,8 @@ def install(vnf_id):
     args.append({"vnf_id":str(vnf_id)})
     response = driver_controller.handle_call("install",args)
     if response["status"] == "ERROR":
-        return {'status':'error','data':"Could not install function"}
-    return {'status':'success','data':'Function installed'}
+        return {'status':'error','message':"Could not install function"}
+    return {'status':'success','message':'Function installed'}
 
 @app.route('/v1.0/vnf/pushvnfp/<uuid:vnf_id>', methods=['POST'])
 def push_vnfp(vnf_id):
@@ -236,8 +236,8 @@ def push_vnfp(vnf_id):
     args.append({"vnfp_filename":f.filename})
     response = driver_controller.handle_call("push_vnfp",args)
     if response["status"] == "ERROR":
-        return {'status':'error','data':"Could not push VNFP"}
-    return {'status':'success','data':'VNFP pushed'}
+        return {'status':'error','message':"Could not push VNFP"}
+    return {'status':'success','message':'VNFP pushed'}
 
 if __name__ == '__main__':
     app.run()
