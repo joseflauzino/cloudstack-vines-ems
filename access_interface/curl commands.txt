@@ -6,22 +6,22 @@
 curl --header "Content-Type: application/json" \
 --request POST \
 --data '{"vnf_id":"fcb4b154-9be4-4afe-a84a-c19b3747b8bb","vnf_ip":"192.168.122.20","vnf_platform":"vines-leaf"}' \
-http://192.168.122.79:9000/v1.0/ems/vnf
+http://192.168.122.153:9000/v1.0/ems/vnf
 
 # List one VNF
 curl --header "Content-Type: application/json" \
 --request GET \
-http://192.168.122.79:9000/v1.0/ems/vnf/fcb4b154-9be4-4afe-a84a-c19b3747b8bb
+http://192.168.122.153:9000/v1.0/ems/vnf/fcb4b154-9be4-4afe-a84a-c19b3747b8bb
 
 # List all VNFs
 curl --header "Content-Type: application/json" \
 --request GET \
-http://192.168.122.79:9000/v1.0/ems/vnf
+http://192.168.122.153:9000/v1.0/ems/vnf
 
 # Delete VNF
 curl --header "Content-Type: application/json" \
 --request DELETE \
-http://192.168.122.79:9000/v1.0/ems/vnf/fcb4b154-9be4-4afe-a84a-c19b3747b8bb
+http://192.168.122.153:9000/v1.0/ems/vnf/fcb4b154-9be4-4afe-a84a-c19b3747b8bb
 
 
 
@@ -35,17 +35,17 @@ http://192.168.122.79:9000/v1.0/ems/vnf/fcb4b154-9be4-4afe-a84a-c19b3747b8bb
 curl --header "Content-Type: application/json" \
 --request POST \
 --data '{"vnf_id":"fcb4b154-9be4-4afe-a84a-c19b3747b8bb","vnfm_ip":"192.168.122.10"}' \
-http://192.168.122.79:9000/v1.0/ems/subscription
+http://192.168.122.153:9000/v1.0/ems/subscription
 
 # List one subscription
 curl --header "Content-Type: application/json" \
 --request GET \
-http://192.168.122.79:9000/v1.0/ems/subscription/<subscription-id>
+http://192.168.122.153:9000/v1.0/ems/subscription/<subscription-id>
 
 # Delete subscription (unsubscribe)
 curl --header "Content-Type: application/json" \
 --request DELETE \
-http://192.168.122.79:9000/v1.0/ems/subscription/<subscription-id>
+http://192.168.122.153:9000/v1.0/ems/subscription/<subscription-id>
 
 #-----------------------------------------------
 # VNF Lifecycle
@@ -54,10 +54,10 @@ http://192.168.122.79:9000/v1.0/ems/subscription/<subscription-id>
 # Get VNF-ExP status
 curl --header "Content-Type: application/json" \
 --request GET \
-http://192.168.122.79:9000/v1.0/vnf/isup/<vnf_id>
+http://192.168.122.153:9000/v1.0/vnf/isup/<vnf_id>
 
 # Push VNFP
 curl --header "Content-Type: application/json" \
 --request POST \
 --data-binary @/var/www/html/vnfp/apache2-vines-leaf.zip \
-http://192.168.122.79:9000/v1.0/vnf/pushvnfp/<vnf_id>
+http://192.168.122.153:9000/v1.0/vnf/pushvnfp/<vnf_id>

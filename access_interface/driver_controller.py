@@ -24,7 +24,10 @@ class DriverController():
 		# necessary to insert '_driver.py' in the names of the driver files
 		drivers_names = []
 		for currentFolder, subFolder, files in os.walk("."):
+			print("currentFolder: "+str(currentFolder))
+			print("files: "+str(files))
 			drivers_names = [os.path.join(file.replace(".py","")) for file in files if file.endswith("-driver.py")]
+		print("Drivers names: "+str(drivers_names))
 		return drivers_names
 
 	def _import_drivers(self, drivers_names):
@@ -54,8 +57,8 @@ class DriverController():
 		if result["success"] == False:
 			return {'status':'error','data':result["data"]}
 		# add VNF data into args
-		args.append({"vnf_ip":result["data"]["ip"]})
-		args.append({"vnf_platform":result["data"]["vnf_exp"]})
+		args.append({"vnf_ip":result["data"][0]["ip"]})
+		args.append({"vnf_platform":result["data"][0]["vnf_exp"]})
 		# instantiate the correct driver and method
 		method = getattr(self._search_driver(self.drivers, self._find_by_key(args,'vnf_platform')), method_name)
 		# call the method
