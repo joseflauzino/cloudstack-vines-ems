@@ -26,7 +26,10 @@ class DriverController():
 		for currentFolder, subFolder, files in os.walk(currentdir):
 			print("currentFolder: "+str(currentFolder))
 			print("files: "+str(files))
-			drivers_names = [os.path.join(file.replace(".py","")) for file in files if file.endswith("-driver.py")]
+			for file in files:
+				if file.endswith("-driver.py"):
+					drivers_names.append(file.replace(".py",""))
+			#drivers_names = [os.path.join(file.replace(".py","")) for file in files if file.endswith("-driver.py")]
 		print("Drivers names: "+str(drivers_names))
 		return drivers_names
 
