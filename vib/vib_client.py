@@ -43,7 +43,8 @@ def add_vnf(args):
         save_base("vnf_base",data)
     except Exception as e:
         return {"success":False, "data":"Could not add VNF %s: %s" % (new_vnf,e)}
-    return {"success":True, "data":"VNF successfully registered"}
+    new_vnf["type"]="vnf"
+    return {"success":True, "data":[new_vnf]}
 
 def create_subscription(args):
     new_subscription = {"id":str(uuid.uuid4()),"vnf_id":find_arg_by_key(args,"vnf_id"),"vnfm_ip":find_arg_by_key(args,"vnfm_ip")}
@@ -57,7 +58,8 @@ def create_subscription(args):
         save_base("subscription_base",data)
     except Exception as e:
         return {"success":False, "data":"Could not create the subscription %s: %s" % (new_subscription,e)}
-    return {"success":True, "data":"Registration successful"}
+    new_subscription["type"]="subscription"
+    return {"success":True, "data":[new_subscription]}
 
 
 #------------------------------------
@@ -66,20 +68,25 @@ def create_subscription(args):
 def find_vnf(vnf_id=None):
     if vnf_id == None:
         try:
-            return {"success":True, "data":_read_base("vnf_base")["vnfs"]}
+            vnfs = _read_base("vnf_base")["vnfs"]
+            for vnf in vnfs:
+                vnf["type"]="vnf"
+            return {"success":True, "data":vnfs}
         except Exception as e:
             return {"success":False, "data":"Could not select all VNFs: %s" % (e)}
     data = _read_base("vnf_base")["vnfs"]
     for vnf in data:
         if vnf["id"] == vnf_id:
-            return {"success":True, "data":vnf}
+            vnf["type"]="vnf"
+            return {"success":True, "data":[vnf]}
     return {"success":False, "data":"Could not find %s" % (vnf_id)}
 
 def find_subscription(subscription_id):
     data = _read_base("subscription_base")["subscriptions"]
     for subscription in data:
         if subscription["id"] == subscription_id:
-            return {"success":True, "data":subscription}
+            subscription["type"]="subscription"
+            return {"success":True, "data":[subscription]}
     return {"success":False, "data":"Could not find %s" % (subscription_id)}
 
 #------------------------------------
@@ -95,7 +102,8 @@ def update_vnf(vnf_id,args):
                 save_base("vnf_base",data)
             except Exception as e:
                 return {"success":False, "data":"Could not update VNF %s: %s" % (vnf,e)}
-            return {"success":True, "data":"VNF updated successfully"}
+            vnf["type"] = "vnf"
+            return {"success":True, "data":[vnf]}
     return {"success":False, "data":"Could not find VNF %s to update it" % (vnf_id)}
 
 #------------------------------------
@@ -108,7 +116,7 @@ def delete_vnf(vnf_id=None):
             save_base("vnf_base",data)
         except Exception as e:
             return {"success":False, "data":"Could not remove all VNFs: %s" % (e)}
-        return {"success":True, "data":"All VNFs were removed"}
+        return {"success":True, "data":[]}
     result = find_vnf(vnf_id)
     if result["success"] == False:
         return result
@@ -119,7 +127,7 @@ def delete_vnf(vnf_id=None):
         save_base("vnf_base",data)
     except Exception as e:
         return {"success":False, "data":"Could not remove VNF %s: %s" % (vnf_id,e)}
-    return {"success":True, "data":"VNF deleted successfully"}
+    return {"success":True, "data":[]}
 
 def delete_subscription(subscription_id):
     result = find_subscription(subscription_id)
@@ -132,4 +140,4 @@ def delete_subscription(subscription_id):
         save_base("subscription_base",data)
     except Exception as e:
         return {"success":False, "data":"Could not remove subscription %s: %s" % (subscription_id,e)}
-    return {"success":True, "data":"Successfully unsubscribed"}
+    return {"success":True, "data":[]}

@@ -13,7 +13,6 @@ import logging
 import json
 import requests
 from flask import Flask, request
-print("API current path: "+os.path.dirname(os.path.realpath(__file__)))
 from access_interface.driver_controller import *
 from util import *
 
@@ -42,14 +41,9 @@ def after_request(response):
 #------------------------------------------------------------------
 # EMS
 #------------------------------------------------------------------
-@app.route('/', methods=['GET'])
-def home_page():
-    logger.info('This is a INFO log!')
-    return os.path.dirname(os.path.realpath(__file__))
-
 @app.route('/v1.0/ems/status', methods=['GET'])
 def ems_status():
-    return {'status':'success','data':'Running'}
+    return {'status':'success','message':'Running'}
 
 #------------------------------------------------------------------
 # VNF
@@ -64,18 +58,20 @@ def ems_vnfs():
         args.append({"vnf_platform":str(request.json['vnf_platform'])})
         response = vib_client.add_vnf(args)
         if response["success"] == False:
-            return {'status':'error','data':"Could not register the VNF %s" % (response["data"])}
+            return {'status':'error','message':"Could not register the VNF. "+response["data"]}
+        return {'status':'success','message':'VNF successfully registred','object':response["data"]}
     # Return info about all VNFs
     if request.method == 'GET':
         response = vib_client.find_vnf()
         if response["success"] == False:
-            return {'status':'error','data':response["data"]}
+            return {'status':'error','message':response["data"]}
+        return {'status':'success','message':'VNFs successfully getted','object':response["data"]}
     # Delete all VNFs
     if request.method == 'DELETE':
         response = vib_client.delete_vnf()
         if response["success"] == False:
-            return {'status':'error','data':"Could not delete all VNFs"}
-    return {'status':'success','data':response["data"]}
+            return {'status':'error','message':response["data"]}
+        return {'status':'success','message':'VNFs successfully deleted','object':response["data"]}
 
 @app.route('/v1.0/ems/vnf/<uuid:vnf_id>', methods=['GET','PUT','DELETE'])
 def ems_vnf(vnf_id):
@@ -83,7 +79,8 @@ def ems_vnf(vnf_id):
     if request.method == 'GET':
         response = vib_client.find_vnf(str(vnf_id))
         if response["success"] == False:
-            return {'status':'error','data':response["data"]}
+            return {'status':'error','message':response["data"]}
+        return {'status':'success','message':'VNF successfully getted','object':response["data"]}
     # Update a given VNF
     if request.method == 'PUT':
         args = []
@@ -99,16 +96,17 @@ def ems_vnf(vnf_id):
             except:
                 pass #ignore errors
         if at_last_one_param == False:
-            return {'status':'error','data':"Could not update the VNF %s. No parameter were given." % (vnf_id)}
+            return {'status':'error','data':"Could not update the VNF "+vnf_id+". No parameter were given."}
         response = vib_client.update_vnf(str(vnf_id), args)
         if response["success"] == False:
-            return {'status':'error','data':"Could not update the VNF %s." % (response["data"])}
+            return {'status':'error','message':response["data"]}
+        return {'status':'success','message':'VNF successfully updated','object':response["data"]}
     # Delete a VNF
     if request.method == 'DELETE':
         response = vib_client.delete_vnf(str(vnf_id))
         if response["success"] == False:
-            return {'status':'error','data':"Could not delete the VNF %s" % (response["data"])}
-    return {'status':'success','data':response["data"]}
+            return {'status':'error','message':response["data"]}
+        return {'status':'success','message':'VNF successfully deleted','object':response["data"]}
 
 # Handle invalid VNF IDs
 @app.route('/v1.0/ems/vnf/<string:any_string>', methods=['GET','PUT','DELETE'])
