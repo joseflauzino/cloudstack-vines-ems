@@ -119,8 +119,8 @@ def delete_vnf(vnf_id=None):
         return {"success":True, "data":[]}
     result = find_vnf(vnf_id)
     if result["success"] == False:
-        return result
-    vnf = result["data"]
+        return result["data"]
+    vnf = result["data"][0]
     data = _read_base("vnf_base")
     try:
         data["vnfs"].remove(vnf)
@@ -133,7 +133,7 @@ def delete_subscription(subscription_id):
     result = find_subscription(subscription_id)
     if result["success"] == False:
         return result
-    subscription = result["data"]
+    subscription = result["data"][0]
     data = _read_base("subscription_base")
     try:
         data["subscriptions"].remove(subscription)
