@@ -2,6 +2,7 @@
 
 import os
 import shlex, subprocess
+import requests
 
 #==================================================================
 #                 Vines-Leaf Driver Implementation                 
@@ -15,74 +16,69 @@ def find_by_key(array, key):
 				return current_value
 	return None
 
-def run_shell_cmd(cmd):
-	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-	output, error = process.communicate()
-	if process.returncode != 0:
-		return {"status":"ERROR","data":output}
-	output = output.rstrip("\n")
-	if output == "":
-		output = "None"
-	return {"status":"SUCCESS","data":output}
-
-def run_local_vnf_request_cmd(args, cmd):
-	return run_shell_cmd(cmd.strip("'"))
-
 #------------------------------------------------------------------
 # General methods
 #------------------------------------------------------------------
 def vnf_status(args):
-	cmd = _build_cmd("GET", _create_url(find_by_key(args,"vnf_ip"), "emsstatus"))
-	response = run_local_vnf_request_cmd(args, cmd)
-	if response["status"] == "ERROR":
-		return {'status':'error','data':"could not get vnf status"}
-	return {'status':'success','data':response["data"]}
+	try:
+		response = sendRequest("GET", _create_url(find_by_key(args,"vnf_ip"), "emsstatus"))
+		return {'status':'success','data':response.text}
+	except:
+		return {'status':'success','data':'could not get vnf status'}
 
 def status(args):
-	cmd = _build_cmd("GET", _create_url(find_by_key(args,"vnf_ip"), "running"))
-	response = run_local_vnf_request_cmd(args, cmd)
-	if response["status"] == "ERROR":
-		return {'status':'error','data':"could not get network function status"}
-	return {'status':'success','data':response["data"]}
+	try:
+		response = sendRequest("GET", _create_url(find_by_key(args,"vnf_ip"), "running"))
+		return {'status':'success','data':response.text}
+	except:
+		return {'status':'success','data':'could not get network function status'}
 
 def push_vnfp(args):
 	vnfp_path = find_by_key(args,"vnfp_path")
 	url = _create_url(find_by_key(args,"vnf_ip"), "push_vnfp")
+	function = open(vnfp_path, 'rb').read()
+	try:
+		response = requests.post(url, data=function, headers={'Content-Type': 'application/octet-stream'})
+		print(response.text)
+		return {'status':'success','data':response.text}
+	except:
+		return {'status':'success','data':'could not push vnfp (POST error)'}
+
 	# Push the VNFP file to VNF
-	http_header = "--header \"Content-Type: application/zip\""
-	scp_cmd = "curl -i -X POST %s --data-binary @%s %s" % (http_header, vnfp_path, url)
-	response = run_shell_cmd(scp_cmd)
-	if response["status"] == "ERROR":
-		return {'status':'error','data':"could not push vnfp (scp error)"}
-	return {'status':'success','data':response["data"]}
+	#http_header = "--header \"Content-Type: application/zip\""
+	#scp_cmd = "curl -i -X POST %s --data-binary @%s %s" % (http_header, vnfp_path, url)
+	#response = run_shell_cmd(scp_cmd)
+	#if response["status"] == "ERROR":
+	#	return {'status':'error','data':"could not push vnfp (scp error)"}
+	#return {'status':'success','data':response["data"]}
 
 def install(args):
-	cmd = _build_cmd("POST", _create_url(find_by_key(args,"vnf_ip"), "install"))
-	response = run_local_vnf_request_cmd(args, cmd)
-	if response["status"] == "ERROR":
-		return {'status':'error','data':"could not install function"}
-	return {'status':'success','data':response["data"]}
+	try:
+		response = sendRequest("POST", _create_url(find_by_key(args,"vnf_ip"), "install"))
+		return {'status':'success','data':response.text}
+	except:
+		return {'status':'success','data':'could not install function'}
 
 def start(args):
-	cmd = _build_cmd("POST", _create_url(find_by_key(args,"vnf_ip"), "start"))
-	response = run_local_vnf_request_cmd(args, cmd)
-	if response["status"] == "ERROR":
-		return {'status':'error','data':"could not start function"}
-	return {'status':'success','data':response["data"]}
+	try:
+		response = sendRequest("POST", _create_url(find_by_key(args,"vnf_ip"), "start"))
+		return {'status':'success','data':response.text}
+	except:
+		return {'status':'success','data':'could not start function'}
 
 def stop(args):
-	cmd = _build_cmd("POST", _create_url(find_by_key(args,"vnf_ip"), "stop"))
-	response = run_local_vnf_request_cmd(args, cmd)
-	if response["status"] == "ERROR":
-		return {'status':'error','data':"could not stop function"}
-	return {'status':'success','data':response["data"]}
+	try:
+		response = sendRequest("POST", _create_url(find_by_key(args,"vnf_ip"), "stop"))
+		return {'status':'success','data':response.text}
+	except:
+		return {'status':'success','data':'could not stop function'}
 
 def get_log(args):
-	cmd = _build_cmd("GET", _create_url(find_by_key(args,"vnf_ip"), "log"))
-	response = run_local_vnf_request_cmd(args, cmd)
-	if response["status"] == "ERROR":
-		return {'status':'error','data':"could not get function log"}
-	return {'status':'success','data':response["data"]}
+	try:
+		response = sendRequest("GET", _create_url(find_by_key(args,"vnf_ip"), "log"))
+		return {'status':'success','data':response.text}
+	except:
+		return {'status':'success','data':'could not get function log'}
 
 
 #------------------------------------------------------------------
@@ -91,7 +87,11 @@ def get_log(args):
 def _create_url(vnf_ip, task):
 	return ''.join(['http://', vnf_ip, ':8000/api/', task])
 
-def _build_cmd(http_method, url):
-	http_header = "--header \"Content-Type: application/json\""
-	curl_cmd = "'curl -X %s %s %s'" % (http_method, http_header, url)
-	return curl_cmd
+def sendRequest(method, url)
+	if method=="GET":
+		response = requests.get(url)
+	if method=="POST":
+		response = requests.post(url)
+	print(response)
+	print(response.text)
+	return response
