@@ -120,20 +120,9 @@ def delete_vnf(vnf_id=None):
     result = find_vnf(vnf_id)
     if result["success"] == False:
         return result["data"]
-    print("Result: "+str(result))
     vnf = result["data"][0]
-    print("VNF: "+str(vnf))
-    print(type(vnf))
+    del vnf["type"] # removing key added by find_vnf() method
     data = _read_base("vnf_base")
-    print(type(data["vnfs"][0]))
-    for x in data["vnfs"]:
-        if x == vnf:
-            print("Is equal!")
-        else:
-            print(x)
-            print(vnf)
-            print(str(x)+"!="+str(vnf))
-            print("Is not equal!")
     try:
         data["vnfs"].remove(vnf)
         save_base("vnf_base",data)
@@ -146,6 +135,7 @@ def delete_subscription(subscription_id):
     if result["success"] == False:
         return result
     subscription = result["data"][0]
+    del subscription["type"] # removing key added by find_subscription() method
     data = _read_base("subscription_base")
     try:
         data["subscriptions"].remove(subscription)
