@@ -123,7 +123,9 @@ def delete_vnf(vnf_id=None):
     print("Result: "+str(result))
     vnf = result["data"][0]
     print("VNF: "+str(vnf))
+    print(type(vnf))
     data = _read_base("vnf_base")
+    print(data["vnfs"][0])
     try:
         data["vnfs"].remove(vnf)
         save_base("vnf_base",data)
