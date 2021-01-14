@@ -96,7 +96,7 @@ def ems_vnf(vnf_id):
             except:
                 pass #ignore errors
         if at_last_one_param == False:
-            return {'status':'error','data':"Could not update the VNF "+vnf_id+". No parameter were given."}
+            return {'status':'error','message':"Could not update the VNF "+vnf_id+". No parameter were given."}
         response = vib_client.update_vnf(str(vnf_id), args)
         if response["success"] == False:
             return {'status':'error','message':response["data"]}
@@ -111,15 +111,15 @@ def ems_vnf(vnf_id):
 # Handle invalid VNF IDs
 @app.route('/v1.0/ems/vnf/<string:any_string>', methods=['GET','PUT','DELETE'])
 def ems_vnf_invalid_usage_string(any_string):
-    return {'status':'error','data':"Invalid usage. The %s value is not a valid UUID." % (any_string)}
+    return {'status':'error','message':"Invalid usage. The %s value is not a valid UUID." % (any_string)}
 
 @app.route('/v1.0/ems/vnf/<int:any_int>', methods=['GET','PUT','DELETE'])
 def ems_vnf_invalid_usage_int(any_int):
-    return {'status':'error','data':"Invalid usage. The %s value is not a valid UUID." % (any_int)}
+    return {'status':'error','message':"Invalid usage. The %s value is not a valid UUID." % (any_int)}
 
 @app.route('/v1.0/ems/vnf/<int:any_float>', methods=['GET','PUT','DELETE'])
 def ems_vnf_invalid_usage_float(any_float):
-    return {'status':'error','data':"Invalid usage. The %s value is not a valid UUID." % (any_float)}
+    return {'status':'error','message':"Invalid usage. The %s value is not a valid UUID." % (any_float)}
 
 #------------------------------------------------------------------
 # Subscription
@@ -134,7 +134,7 @@ def ems_subscriptions():
         response = vib_client.create_subscription(args)
         if response["success"] == False:
             return {'status':'error','message':response["data"]}
-        return {'status':'success','data':response["data"]}
+        return {'status':'success','message':response["data"]}
 
 @app.route('/v1.0/ems/subscription/<uuid:subscription_id>', methods=['GET','DELETE'])
 def ems_subscription(subscription_id):
@@ -148,20 +148,20 @@ def ems_subscription(subscription_id):
         response = vib_client.delete_subscription(str(subscription_id))
         if response["success"] == False:
             return {'status':'error','message':response["data"]}
-    return {'status':'success','data':response["data"]}
+    return {'status':'success','message':response["data"]}
 
 # Handle invalid subscription IDs
 @app.route('/v1.0/ems/subscription/<string:any_string>', methods=['GET','PUT','DELETE'])
 def ems_subscription_invalid_usage_string(any_string):
-    return {'status':'error','data':"Invalid usage. The %s value is not a valid UUID." % (any_string)}
+    return {'status':'error','message':"Invalid usage. The %s value is not a valid UUID." % (any_string)}
 
 @app.route('/v1.0/ems/subscription/<int:any_int>', methods=['GET','PUT','DELETE'])
 def ems_subscription_invalid_usage_int(any_int):
-    return {'status':'error','data':"Invalid usage. The %s value is not a valid UUID." % (any_int)}
+    return {'status':'error','message':"Invalid usage. The %s value is not a valid UUID." % (any_int)}
 
 @app.route('/v1.0/ems/subscription/<int:any_float>', methods=['GET','PUT','DELETE'])
 def ems_subscription_invalid_usage_float(any_float):
-    return {'status':'error','data':"Invalid usage. The %s value is not a valid UUID." % (any_float)}
+    return {'status':'error','message':"Invalid usage. The %s value is not a valid UUID." % (any_float)}
 
 
 
@@ -178,7 +178,7 @@ def vnf_exp_status(vnf_id):
         return {'status':'error','message':"Could not get the VNF-ExP status"}
     if response["data"] != "Running":
         return {'status':'error','message':"Could not get the VNF-ExP status"}
-    return {'status':'success','data':response["data"]}
+    return {'status':'success','message':response["data"]}
 
 @app.route('/v1.0/vnf/status/<uuid:vnf_id>', methods=['GET'])
 def status(vnf_id):
