@@ -130,6 +130,9 @@ def delete_vnf(vnf_id=None):
         if x == vnf:
             print("Is equal!")
         else:
+            print(x)
+            print(vnf)
+            print(str(x)+"!="+str(vnf))
             print("Is not equal!")
     try:
         data["vnfs"].remove(vnf)
