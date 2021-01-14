@@ -87,7 +87,7 @@ def get_log(args):
 def _create_url(vnf_ip, task):
 	return ''.join(['http://', vnf_ip, ':8000/api/', task])
 
-def sendRequest(method, url)
+def sendRequest(method, url):
 	if method=="GET":
 		response = requests.get(url)
 	if method=="POST":
