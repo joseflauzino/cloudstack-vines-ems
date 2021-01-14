@@ -120,7 +120,9 @@ def delete_vnf(vnf_id=None):
     result = find_vnf(vnf_id)
     if result["success"] == False:
         return result["data"]
+    print("Result: "+result)
     vnf = result["data"][0]
+    print("VNF: "+vnf)
     data = _read_base("vnf_base")
     try:
         data["vnfs"].remove(vnf)
