@@ -126,6 +126,11 @@ def delete_vnf(vnf_id=None):
     print(type(vnf))
     data = _read_base("vnf_base")
     print(type(data["vnfs"][0]))
+    for x in data["vnfs"]:
+        if x == vnf:
+            print("Is equal!")
+        else:
+            print("Is not equal!")
     try:
         data["vnfs"].remove(vnf)
         save_base("vnf_base",data)
