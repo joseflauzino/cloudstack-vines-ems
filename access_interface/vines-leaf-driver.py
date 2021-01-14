@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+import os
+import shlex, subprocess
+
 #==================================================================
 #                 Vines-Leaf Driver Implementation                 
 #                                                by Jose Flauzino 
