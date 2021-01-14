@@ -38,7 +38,7 @@ class DriverController():
 		drivers = []
 		for driver in drivers_names:
 			#drivers.append(__import__(driver))
-			drivers.append(imp.load_source(driver, currentdir+driver+".py"))
+			drivers.append(imp.load_source(driver, currentdir+"/"+driver+".py"))
 		print("Imported drivers: "+str(drivers))
 		return drivers
 
