@@ -9,6 +9,7 @@
 
 import os
 import sys
+import imp
 currentdir = os.path.dirname(os.path.realpath(__file__))
 parentdir = os.path.dirname(currentdir)
 sys.path.append(parentdir)
@@ -36,7 +37,9 @@ class DriverController():
 	def _import_drivers(self, drivers_names):
 		drivers = []
 		for driver in drivers_names:
-			drivers.append(__import__(driver))
+			#drivers.append(__import__(driver))
+			drivers.append(imp.load_source(driver, currentdir))
+		print("Imported drivers: "+str(drivers))
 		return drivers
 
 	def _search_driver(self, drivers, driver_type):
