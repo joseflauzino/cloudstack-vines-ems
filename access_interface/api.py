@@ -9,21 +9,16 @@
 
 import os
 import sys
-import logging
 import json
 import requests
 from flask import Flask, request
 from access_interface.driver_controller import *
 from util import *
 
-
-#logging.basicConfig(filename='api.log', level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-
 ##################################################################
 ###################### Global definitions ########################
 ##################################################################
+
 app = Flask(__name__)
 driver_controller = DriverController()
 
