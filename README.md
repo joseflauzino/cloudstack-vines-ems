@@ -28,7 +28,7 @@ This module is run by an Apache2 web server using WSGI. So, to managed it uses t
 	# systemctl restart apache2 ## restart the service
 
 ### Fault Monitor
-Use the commands bellow to manage this module.
+Use the commands below to manage this module.
 
 	# systemctl status vines-ems-fault-monitor  ## get status
 	# systemctl stop vines-ems-fault-monitor    ## stop the service
@@ -36,7 +36,7 @@ Use the commands bellow to manage this module.
 	# systemctl restart vines-ems-fault-monitor ## restart the service
 
 ### Performance Monitor
-Use the commands bellow to manage this module.
+Use the commands below to manage this module.
 
 	# systemctl status vines-ems-perf-monitor  ## get status
 	# systemctl stop vines-ems-perf-monitor    ## stop the service
@@ -48,20 +48,20 @@ Use the commands bellow to manage this module.
 ### Access Interface Module
 Since this module is run by an Apache2 web server using WSGI, the logs are recorded in the Apache2 log files.
 
-Run the command bellow to monitor the access.
+Run the command below to monitor the access.
 
 	# tail -f /var/log/apache2/access.log
 
-Run the command bellow to monitor errors. 
+Run the command below to monitor errors. 
 
 	# tail -f /var/log/apache2/error.log
 
 ### Fault Monitor
-Use the commands bellow to monitor this module.
+Use the command below to monitor this module.
 
 	# tail -f /var/log/vines-ems/fault-monitor.log
 
 ### Performance Monitor
-Use the commands bellow to monitor this module.
+Use the command below to monitor this module.
 
 	# tail -f /var/log/vines-ems/perf-monitor.log
