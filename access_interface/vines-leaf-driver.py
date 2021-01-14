@@ -1,15 +1,29 @@
 #!/usr/bin/env python
 
-import os
-import sys
-currentdir = os.path.dirname(os.path.realpath(__file__))
-sys.path.append(currentdir)
-from util import *
-
 #==================================================================
 #                 Vines-Leaf Driver Implementation                 
 #                                                by Jose Flauzino 
 #==================================================================
+
+def find_by_key(array, key):
+	for d in array:
+		for current_key, current_value in d.items():
+			if current_key == key:
+				return current_value
+	return None
+
+def run_shell_cmd(cmd):
+	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+	output, error = process.communicate()
+	if process.returncode != 0:
+		return {"status":"ERROR","data":output}
+	output = output.rstrip("\n")
+	if output == "":
+		output = "None"
+	return {"status":"SUCCESS","data":output}
+
+def run_local_vnf_request_cmd(args, cmd):
+	return run_shell_cmd(cmd.strip("'"))
 
 #------------------------------------------------------------------
 # General methods
