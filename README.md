@@ -56,3 +56,12 @@ Run the command bellow to monitor errors.
 
 	# tail -f /var/log/apache2/error.log
 
+### Fault Monitor
+Use the commands bellow to monitor this module.
+
+	# tail -f /var/log/vines-ems/fault-monitor.log
+
+### Performance Monitor
+Use the commands bellow to monitor this module.
+
+	# tail -f /var/log/vines-ems/perf-monitor.log
