@@ -321,7 +321,7 @@ def status_invalid_usage_float(invalid_value):
 ##################################################################
 
 def invaliUuidResponse(invalid_value):
-    return {'status':'error','message':"Invalid usage. The "+any_string+" value is not a valid UUID."}
+    return {'status':'error','message':"Invalid usage. The "+invalid_value+" value is not a valid UUID."}
 
 if __name__ == '__main__':
     app.run()
