@@ -22,7 +22,7 @@ class DriverController():
 		# TODO: try to allocate all drivers in a specific folder, so that it is not
 		# necessary to insert '_driver.py' in the names of the driver files
 		drivers_names = []
-		for currentFolder, subFolder, files in os.walk(drivers_path):
+		for currentFolder, subFolder, files in os.walk(self.drivers_path):
 			print("currentFolder: "+str(currentFolder))
 			print("files: "+str(files))
 			for file in files:
@@ -36,7 +36,7 @@ class DriverController():
 		drivers = []
 		for driver in drivers_names:
 			#drivers.append(__import__(driver))
-			drivers.append(imp.load_source(driver, drivers_path+"/"+driver+".py"))
+			drivers.append(imp.load_source(driver, self.drivers_path+"/"+driver+".py"))
 		print("Imported drivers: "+str(drivers))
 		return drivers
 
