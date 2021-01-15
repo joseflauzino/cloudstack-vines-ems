@@ -12,18 +12,17 @@ import sys
 import imp
 from vib import vib_client
 
-currentdir = os.path.dirname(os.path.realpath(__file__))
-
 class DriverController():
 	# Private methods
 	def __init__(self):
+		self.drivers_path = os.path.dirname(os.path.realpath(__file__))+"/drivers"
 		self.drivers = self._import_drivers(self._read_drivers()) # load all drivers
 
 	def _read_drivers(self):
 		# TODO: try to allocate all drivers in a specific folder, so that it is not
 		# necessary to insert '_driver.py' in the names of the driver files
 		drivers_names = []
-		for currentFolder, subFolder, files in os.walk(currentdir):
+		for currentFolder, subFolder, files in os.walk(drivers_path):
 			print("currentFolder: "+str(currentFolder))
 			print("files: "+str(files))
 			for file in files:
@@ -37,7 +36,7 @@ class DriverController():
 		drivers = []
 		for driver in drivers_names:
 			#drivers.append(__import__(driver))
-			drivers.append(imp.load_source(driver, currentdir+"/"+driver+".py"))
+			drivers.append(imp.load_source(driver, drivers_path+"/"+driver+".py"))
 		print("Imported drivers: "+str(drivers))
 		return drivers
 
