@@ -1,7 +1,5 @@
 # CloudStack Vines EMS
 
-
-
 ## Installation
 
 Clone this repository.
