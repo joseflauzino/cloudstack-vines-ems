@@ -9,11 +9,8 @@
 
 import os
 import sys
-import json
-import requests
 from flask import Flask, request
 from access_interface.driver_controller import *
-from util import *
 
 ##################################################################
 ###################### Global definitions ########################
@@ -323,5 +320,10 @@ def status_invalid_usage_float(invalid_value):
 def invaliUuidResponse(invalid_value):
     return {'status':'error','message':"Invalid usage. The "+invalid_value+" value is not a valid UUID."}
 
+
+
+##################################################################
+############################# Main ###############################
+##################################################################
 if __name__ == '__main__':
     app.run()
