@@ -10,12 +10,8 @@ echo "--------------------------------------"
 echo " Access Interface installation"
 echo "--------------------------------------"
 echo "Installing requirements"
-apt -y update
-apt -y install apache2 libapache2-mod-wsgi-py3 python3 python3-pip
+apt -y update && apt -y install python3 python3-pip apache2 libapache2-mod-wsgi-py3
 pip3 install -r requirements.txt
-
-echo "Configuring log"
-sed -i "s|logging.basicConfig.*|logging.basicConfig(filename='/etc/cloudstack-vines-ems/access_interface/api.log', level=logging.INFO)|g" access_interface/api.py
 
 echo "Creating the Vines EMS directory"
 mkdir /etc/cloudstack-vines-ems/
@@ -39,12 +35,8 @@ cat >/etc/apache2/sites-available/000-default.conf <<'EOM'
         ServerAdmin jwvflauzino@inf.ufpr.br
         DocumentRoot /etc/cloudstack-vines-ems/
 
-        WSGIDaemonProcess flaskTest threads=5
         WSGIScriptAlias / /var/www/html/wsgi.py
-        <Directory /var/www/html>
-           WSGIProcessGroup flaskTest
-           WSGIApplicationGroup %{GLOBAL}
-           WSGIScriptReloading On
+        <Directory /etc/cloudstack-vines-ems/>
            Require all granted
          </Directory>
 

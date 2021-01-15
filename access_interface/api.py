@@ -68,7 +68,7 @@ def ems_vnfs():
             return {'status':'error','message':response["data"]}
         return {'status':'success','message':'VNFs successfully deleted','object':response["data"]}
 
-@app.route('/v1.0/ems/vnf/<uuid:vnf_id>', methods=['GET','PUT','DELETE'])
+@app.route('/v1.0/ems/vnf/<uuid:vnf_id>', methods=['GET','PATCH','DELETE'])
 def ems_vnf(vnf_id):
     # Return info about a given VNF
     if request.method == 'GET':
@@ -77,7 +77,7 @@ def ems_vnf(vnf_id):
             return {'status':'error','message':response["data"]}
         return {'status':'success','message':'VNF successfully getted','object':response["data"]}
     # Update a given VNF
-    if request.method == 'PUT':
+    if request.method == 'PATCH':
         args = []
         valid_param_map = [{"vnf_id":"id"},{"vnf_ip":"ip"},{"vnf_platform":"vnf_exp"}]
         at_last_one_param = False
@@ -104,15 +104,15 @@ def ems_vnf(vnf_id):
         return {'status':'success','message':'VNF successfully deleted','object':response["data"]}
 
 # Handle invalid VNF IDs
-@app.route('/v1.0/ems/vnf/<string:any_string>', methods=['GET','PUT','DELETE'])
+@app.route('/v1.0/ems/vnf/<string:any_string>', methods=['GET','PATCH','DELETE'])
 def ems_vnf_invalid_usage_string(any_string):
     return {'status':'error','message':"Invalid usage. The %s value is not a valid UUID." % (any_string)}
 
-@app.route('/v1.0/ems/vnf/<int:any_int>', methods=['GET','PUT','DELETE'])
+@app.route('/v1.0/ems/vnf/<int:any_int>', methods=['GET','PATCH','DELETE'])
 def ems_vnf_invalid_usage_int(any_int):
     return {'status':'error','message':"Invalid usage. The %s value is not a valid UUID." % (any_int)}
 
-@app.route('/v1.0/ems/vnf/<int:any_float>', methods=['GET','PUT','DELETE'])
+@app.route('/v1.0/ems/vnf/<int:any_float>', methods=['GET','PATCH','DELETE'])
 def ems_vnf_invalid_usage_float(any_float):
     return {'status':'error','message':"Invalid usage. The %s value is not a valid UUID." % (any_float)}
 
@@ -146,15 +146,15 @@ def ems_subscription(subscription_id):
     return {'status':'success','message':response["data"]}
 
 # Handle invalid subscription IDs
-@app.route('/v1.0/ems/subscription/<string:any_string>', methods=['GET','PUT','DELETE'])
+@app.route('/v1.0/ems/subscription/<string:any_string>', methods=['GET','PATCH','DELETE'])
 def ems_subscription_invalid_usage_string(any_string):
     return {'status':'error','message':"Invalid usage. The %s value is not a valid UUID." % (any_string)}
 
-@app.route('/v1.0/ems/subscription/<int:any_int>', methods=['GET','PUT','DELETE'])
+@app.route('/v1.0/ems/subscription/<int:any_int>', methods=['GET','PATCH','DELETE'])
 def ems_subscription_invalid_usage_int(any_int):
     return {'status':'error','message':"Invalid usage. The %s value is not a valid UUID." % (any_int)}
 
-@app.route('/v1.0/ems/subscription/<int:any_float>', methods=['GET','PUT','DELETE'])
+@app.route('/v1.0/ems/subscription/<int:any_float>', methods=['GET','PATCH','DELETE'])
 def ems_subscription_invalid_usage_float(any_float):
     return {'status':'error','message':"Invalid usage. The %s value is not a valid UUID." % (any_float)}
 
