@@ -104,17 +104,17 @@ def ems_vnf(vnf_id):
         return {'status':'success','message':'VNF successfully deleted','object':response["data"]}
 
 # Handle invalid VNF IDs
-@app.route('/v1.0/ems/vnf/<string:any_string>', methods=['GET','PATCH','DELETE'])
-def ems_vnf_invalid_usage_string(any_string):
-    return {'status':'error','message':"Invalid usage. The "+any_string+" value is not a valid UUID."}
+@app.route('/v1.0/ems/vnf/<string:invalid_value>', methods=['GET','PATCH','DELETE'])
+def ems_vnf_invalid_usage_string(invalid_value):
+    return invaliUuidResponse(invalid_value)
 
-@app.route('/v1.0/ems/vnf/<int:any_int>', methods=['GET','PATCH','DELETE'])
-def ems_vnf_invalid_usage_int(any_int):
-    return {'status':'error','message':"Invalid usage. The "+any_int+" value is not a valid UUID."}
+@app.route('/v1.0/ems/vnf/<int:invalid_value>', methods=['GET','PATCH','DELETE'])
+def ems_vnf_invalid_usage_int(invalid_value):
+    return invaliUuidResponse(invalid_value)
 
-@app.route('/v1.0/ems/vnf/<int:any_float>', methods=['GET','PATCH','DELETE'])
-def ems_vnf_invalid_usage_float(any_float):
-    return {'status':'error','message':"Invalid usage. The "+any_float+" value is not a valid UUID."}
+@app.route('/v1.0/ems/vnf/<float:invalid_value>', methods=['GET','PATCH','DELETE'])
+def ems_vnf_invalid_usage_float(invalid_value):
+    return invaliUuidResponse(invalid_value)
 
 #------------------------------------------------------------------
 # Subscription
@@ -146,17 +146,17 @@ def ems_subscription(subscription_id):
     return {'status':'success','message':response["data"]}
 
 # Handle invalid subscription IDs
-@app.route('/v1.0/ems/subscription/<string:any_string>', methods=['GET','PATCH','DELETE'])
-def ems_subscription_invalid_usage_string(any_string):
-    return {'status':'error','message':"Invalid usage. The "+any_string+" value is not a valid UUID."}
+@app.route('/v1.0/ems/subscription/<string:invalid_value>', methods=['GET','PATCH','DELETE'])
+def ems_subscription_invalid_usage_string(invalid_value):
+    return invaliUuidResponse(invalid_value)
 
-@app.route('/v1.0/ems/subscription/<int:any_int>', methods=['GET','PATCH','DELETE'])
-def ems_subscription_invalid_usage_int(any_int):
-    return {'status':'error','message':"Invalid usage. The "+any_int+" value is not a valid UUID."}
+@app.route('/v1.0/ems/subscription/<int:invalid_value>', methods=['GET','PATCH','DELETE'])
+def ems_subscription_invalid_usage_int(invalid_value):
+    return invaliUuidResponse(invalid_value)
 
-@app.route('/v1.0/ems/subscription/<int:any_float>', methods=['GET','PATCH','DELETE'])
-def ems_subscription_invalid_usage_float(any_float):
-    return {'status':'error','message':"Invalid usage. The "+any_float+" value is not a valid UUID."}
+@app.route('/v1.0/ems/subscription/<float:invalid_value>', methods=['GET','PATCH','DELETE'])
+def ems_subscription_invalid_usage_float(invalid_value):
+    return invaliUuidResponse(invalid_value)
 
 
 
@@ -164,6 +164,9 @@ def ems_subscription_invalid_usage_float(any_float):
 ################### VNF Lifecycle Management #####################
 ##################################################################
 
+#------------------------------------------------------------------
+# Is up?
+#------------------------------------------------------------------
 @app.route('/v1.0/vnf/isup/<uuid:vnf_id>', methods=['GET'])
 def vnf_exp_status(vnf_id):
     args = []
@@ -175,51 +178,21 @@ def vnf_exp_status(vnf_id):
         return {'status':'error','message':"Could not get the VNF-ExP status"}
     return {'status':'success','message':response["data"]}
 
-@app.route('/v1.0/vnf/status/<uuid:vnf_id>', methods=['GET'])
-def status(vnf_id):
-    args = []
-    args.append({"vnf_id":str(vnf_id)})
-    response = driver_controller.handle_call("status",args)
-    if response["status"] == "ERROR":
-        return {'status':'error','message':"Could not get function status"}
-    return {'status':'success','message':response["data"]}
+@app.route('/v1.0/vnf/isup/<string:invalid_value>', methods=['GET'])
+def vnf_exp_status_invalid_usage_string(invalid_value):
+    return invaliUuidResponse(invalid_value)
 
-@app.route('/v1.0/vnf/log/<uuid:vnf_id>', methods=['GET'])
-def get_log(vnf_id):
-    args = []
-    args.append({"vnf_id":str(vnf_id)})
-    response = driver_controller.handle_call("get_log",args)
-    if response["status"] == "ERROR":
-        return {'status':'error','message':"Could not get function log"}
-    return {'status':'success','message':response["data"]}
+@app.route('/v1.0/vnf/isup/<int:invalid_value>', methods=['GET'])
+def vnf_exp_status_invalid_usage_int(invalid_value):
+    return invaliUuidResponse(invalid_value)
 
-@app.route('/v1.0/vnf/stop/<uuid:vnf_id>', methods=['POST'])
-def stop_function(vnf_id):
-    args = []
-    args.append({"vnf_id":str(vnf_id)})
-    response = driver_controller.handle_call("stop",args)
-    if response["status"] == "ERROR":
-        return {'status':'error','message':"Could not stop function"}
-    return {'status':'success','message':'Function stopped'}
+@app.route('/v1.0/vnf/isup/<float:invalid_value>', methods=['GET'])
+def vnf_exp_status_invalid_usage_float(invalid_value):
+    return invaliUuidResponse(invalid_value)
 
-@app.route('/v1.0/vnf/start/<uuid:vnf_id>', methods=['POST'])
-def start_function(vnf_id):
-    args = []
-    args.append({"vnf_id":str(vnf_id)})
-    response = driver_controller.handle_call("start",args)
-    if response["status"] == "ERROR":
-        return {'status':'error','message':"Could not start function"}
-    return {'status':'success','message':'Function started'}
-
-@app.route('/v1.0/vnf/install/<uuid:vnf_id>', methods=['POST'])
-def install(vnf_id):
-    args = []
-    args.append({"vnf_id":str(vnf_id)})
-    response = driver_controller.handle_call("install",args)
-    if response["status"] == "ERROR":
-        return {'status':'error','message':"Could not install function"}
-    return {'status':'success','message':'Function installed'}
-
+#------------------------------------------------------------------
+# Push VNF Package
+#------------------------------------------------------------------
 @app.route('/v1.0/vnf/pushvnfp/<uuid:vnf_id>', methods=['POST'])
 def push_vnfp(vnf_id):
     args = []
@@ -233,6 +206,122 @@ def push_vnfp(vnf_id):
     if response["status"] == "ERROR":
         return {'status':'error','message':"Could not push VNFP"}
     return {'status':'success','message':'VNFP pushed'}
+
+@app.route('/v1.0/vnf/pushvnfp/<string:invalid_value>', methods=['POST'])
+def push_vnfp_invalid_usage_string(invalid_value):
+    return invaliUuidResponse(invalid_value)
+
+@app.route('/v1.0/vnf/pushvnfp/<int:invalid_value>', methods=['POST'])
+def push_vnfp_invalid_usage_int(invalid_value):
+    return invaliUuidResponse(invalid_value)
+
+@app.route('/v1.0/vnf/pushvnfp/<float:invalid_value>', methods=['POST'])
+def push_vnfp_invalid_usage_float(invalid_value):
+    return invaliUuidResponse(invalid_value)
+
+#------------------------------------------------------------------
+# Install
+#------------------------------------------------------------------
+@app.route('/v1.0/vnf/install/<uuid:vnf_id>', methods=['POST'])
+def install(vnf_id):
+    args = []
+    args.append({"vnf_id":str(vnf_id)})
+    response = driver_controller.handle_call("install",args)
+    if response["status"] == "ERROR":
+        return {'status':'error','message':"Could not install function"}
+    return {'status':'success','message':'Function installed'}
+
+@app.route('/v1.0/vnf/install/<string:invalid_value>', methods=['POST'])
+def install_invalid_usage_string(invalid_value):
+    return invaliUuidResponse(invalid_value)
+
+@app.route('/v1.0/vnf/install/<int:invalid_value>', methods=['POST'])
+def install_invalid_usage_int(invalid_value):
+    return invaliUuidResponse(invalid_value)
+
+@app.route('/v1.0/vnf/install/<float:invalid_value>', methods=['POST'])
+def install_invalid_usage_float(invalid_value):
+    return invaliUuidResponse(invalid_value)
+
+#------------------------------------------------------------------
+# Start
+#------------------------------------------------------------------
+@app.route('/v1.0/vnf/start/<uuid:vnf_id>', methods=['POST'])
+def start_function(vnf_id):
+    args = []
+    args.append({"vnf_id":str(vnf_id)})
+    response = driver_controller.handle_call("start",args)
+    if response["status"] == "ERROR":
+        return {'status':'error','message':"Could not start function"}
+    return {'status':'success','message':'Function started'}
+
+@app.route('/v1.0/vnf/start/<string:invalid_value>', methods=['POST'])
+def start_function_invalid_usage_string(invalid_value):
+    return invaliUuidResponse(invalid_value)
+
+@app.route('/v1.0/vnf/start/<int:invalid_value>', methods=['POST'])
+def start_function_invalid_usage_int(invalid_value):
+    return invaliUuidResponse(invalid_value)
+
+@app.route('/v1.0/vnf/start/<float:invalid_value>', methods=['POST'])
+def start_function_invalid_usage_float(invalid_value):
+    return invaliUuidResponse(invalid_value)
+
+#------------------------------------------------------------------
+# Stop
+#------------------------------------------------------------------
+@app.route('/v1.0/vnf/stop/<uuid:vnf_id>', methods=['POST'])
+def stop_function(vnf_id):
+    args = []
+    args.append({"vnf_id":str(vnf_id)})
+    response = driver_controller.handle_call("stop",args)
+    if response["status"] == "ERROR":
+        return {'status':'error','message':"Could not stop function"}
+    return {'status':'success','message':'Function stopped'}
+
+@app.route('/v1.0/vnf/stop/<string:invalid_value>', methods=['POST'])
+def stop_function_invalid_usage_string(invalid_value):
+    return invaliUuidResponse(invalid_value)
+
+@app.route('/v1.0/vnf/stop/<int:invalid_value>', methods=['POST'])
+def stop_function_invalid_usage_int(invalid_value):
+    return invaliUuidResponse(invalid_value)
+
+@app.route('/v1.0/vnf/stop/<float:invalid_value>', methods=['POST'])
+def stop_function_invalid_usage_float(invalid_value):
+    return invaliUuidResponse(invalid_value)
+
+#------------------------------------------------------------------
+# Status
+#------------------------------------------------------------------
+@app.route('/v1.0/vnf/status/<uuid:vnf_id>', methods=['GET'])
+def status(vnf_id):
+    args = []
+    args.append({"vnf_id":str(vnf_id)})
+    response = driver_controller.handle_call("status",args)
+    if response["status"] == "ERROR":
+        return {'status':'error','message':"Could not get function status"}
+    return {'status':'success','message':response["data"]}
+
+@app.route('/v1.0/vnf/status/<string:invalid_value>', methods=['GET'])
+def status_invalid_usage_string(invalid_value):
+    return invaliUuidResponse(invalid_value)
+
+@app.route('/v1.0/vnf/status/<int:invalid_value>', methods=['GET'])
+def status_invalid_usage_int(invalid_value):
+    return invaliUuidResponse(invalid_value)
+
+@app.route('/v1.0/vnf/status/<float:invalid_value>', methods=['GET'])
+def status_invalid_usage_float(invalid_value):
+    return invaliUuidResponse(invalid_value)
+
+
+##################################################################
+############################ Common ##############################
+##################################################################
+
+def invaliUuidResponse(invalid_value):
+    return {'status':'error','message':"Invalid usage. The "+any_string+" value is not a valid UUID."}
 
 if __name__ == '__main__':
     app.run()
