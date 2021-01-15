@@ -30,11 +30,11 @@ http://192.168.122.176:9000/v1.0/ems/vnf/fcb4b154-9be4-4afe-a84a-c19b3747b8bb
 #-----------------------------------------------
 
 # Create new subscription (subscribe)
-
-
 curl --header "Content-Type: application/json" \
 --request POST \
---data '{"vnf_id":"fcb4b154-9be4-4afe-a84a-c19b3747b8bb","vnfm_ip":"192.168.122.10"}' \
+--data '{"vnf_id":"fcb4b154-9be4-4afe-a84a-c19b3747b8bb","vnfm_ip":"192.168.122.10", \
+"api_key":"JQ334Ey9EAxQfEO_wdJNJwEHaX7JJSI1hDmT0GertSalP26Feg6dwYBSejBXXl5uK_I9LUrvKi1JLeqCS8cvKA", \
+"secret_key":"0WklYLz_fUZxg-tFtHl4nCbvFORa0DQclXR9yrXG3mmvlRUA6pXCuzqZG-kwNAmVWZcBIj7V35Kb9xjURYlU6g"}' \
 http://192.168.122.176:9000/v1.0/ems/subscription
 
 # List one subscription
