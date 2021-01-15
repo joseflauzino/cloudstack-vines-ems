@@ -8,7 +8,6 @@
 #==============================================================================
 
 import os
-import sys
 import imp
 from vib import vib_client
 
