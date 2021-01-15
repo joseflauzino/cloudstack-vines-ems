@@ -47,7 +47,13 @@ def add_vnf(args):
     return {"success":True, "data":[new_vnf]}
 
 def create_subscription(args):
-    new_subscription = {"id":str(uuid.uuid4()),"vnf_id":find_arg_by_key(args,"vnf_id"),"vnfm_ip":find_arg_by_key(args,"vnfm_ip")}
+    new_subscription = {
+        "id":str(uuid.uuid4()),
+        "vnf_id":find_arg_by_key(args,"vnf_id"),
+        "vnfm_ip":find_arg_by_key(args,"vnfm_ip"),
+        "api_key":find_arg_by_key(args,"api_key"),
+        "secret_key":find_arg_by_key(args,"secret_key")
+    }
     result = find_vnf(new_subscription["vnf_id"])
     if result["success"]==False:
         return {"success":False, "data":"Could not create the subscription %s: %s" % (new_subscription["id"],result["data"])}

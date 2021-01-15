@@ -123,6 +123,8 @@ def ems_subscriptions():
         args = []
         args.append({"vnfm_ip":str(request.json['vnfm_ip'])}) # IP of the VNFM (CloudStack Management Server IP)
         args.append({"vnf_id":str(request.json['vnf_id'])}) # ID of the VNF that you want to receive notifications
+        args.append({"api_key":str(request.json['api_key'])}) # the API Key that will be used to notify the VNFM
+        args.append({"secret_key":str(request.json['secret_key'])}) # the Secret Key that will be used to notify the VNFM
         response = vib_client.create_subscription(args)
         if response["success"] == False:
             return {'status':'error','message':response["data"]}
