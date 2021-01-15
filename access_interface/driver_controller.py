@@ -10,9 +10,6 @@
 import os
 import sys
 import imp
-currentdir = os.path.dirname(os.path.realpath(__file__))
-parentdir = os.path.dirname(currentdir)
-sys.path.append(parentdir)
 from vib import vib_client
 
 class DriverController():
@@ -24,7 +21,7 @@ class DriverController():
 		# TODO: try to allocate all drivers in a specific folder, so that it is not
 		# necessary to insert '_driver.py' in the names of the driver files
 		drivers_names = []
-		for currentFolder, subFolder, files in os.walk(currentdir):
+		for currentFolder, subFolder, files in os.walk("."):
 			print("currentFolder: "+str(currentFolder))
 			print("files: "+str(files))
 			for file in files:
