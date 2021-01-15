@@ -106,15 +106,15 @@ def ems_vnf(vnf_id):
 # Handle invalid VNF IDs
 @app.route('/v1.0/ems/vnf/<string:any_string>', methods=['GET','PATCH','DELETE'])
 def ems_vnf_invalid_usage_string(any_string):
-    return {'status':'error','message':"Invalid usage. The %s value is not a valid UUID." % (any_string)}
+    return {'status':'error','message':"Invalid usage. The "+any_string+" value is not a valid UUID."}
 
 @app.route('/v1.0/ems/vnf/<int:any_int>', methods=['GET','PATCH','DELETE'])
 def ems_vnf_invalid_usage_int(any_int):
-    return {'status':'error','message':"Invalid usage. The %s value is not a valid UUID." % (any_int)}
+    return {'status':'error','message':"Invalid usage. The "+any_int+" value is not a valid UUID."}
 
 @app.route('/v1.0/ems/vnf/<int:any_float>', methods=['GET','PATCH','DELETE'])
 def ems_vnf_invalid_usage_float(any_float):
-    return {'status':'error','message':"Invalid usage. The %s value is not a valid UUID." % (any_float)}
+    return {'status':'error','message':"Invalid usage. The "+any_float+" value is not a valid UUID."}
 
 #------------------------------------------------------------------
 # Subscription
@@ -148,15 +148,15 @@ def ems_subscription(subscription_id):
 # Handle invalid subscription IDs
 @app.route('/v1.0/ems/subscription/<string:any_string>', methods=['GET','PATCH','DELETE'])
 def ems_subscription_invalid_usage_string(any_string):
-    return {'status':'error','message':"Invalid usage. The %s value is not a valid UUID." % (any_string)}
+    return {'status':'error','message':"Invalid usage. The "+any_string+" value is not a valid UUID."}
 
 @app.route('/v1.0/ems/subscription/<int:any_int>', methods=['GET','PATCH','DELETE'])
 def ems_subscription_invalid_usage_int(any_int):
-    return {'status':'error','message':"Invalid usage. The %s value is not a valid UUID." % (any_int)}
+    return {'status':'error','message':"Invalid usage. The "+any_int+" value is not a valid UUID."}
 
 @app.route('/v1.0/ems/subscription/<int:any_float>', methods=['GET','PATCH','DELETE'])
 def ems_subscription_invalid_usage_float(any_float):
-    return {'status':'error','message':"Invalid usage. The %s value is not a valid UUID." % (any_float)}
+    return {'status':'error','message':"Invalid usage. The "+any_float+" value is not a valid UUID."}
 
 
 
