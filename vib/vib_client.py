@@ -48,19 +48,21 @@ def add_vnf(args):
     except Exception as e:
         return {"success":False, "data":"Could not add VNF %s: %s" % (new_vnf,e)}
     new_vnf["type"]="vnf"
-    result = find_arg_by_key(args,"monitoring_interval")
-    if result is int and result > 0:
-        policy = add_policy(args)
-        del policy["vnf_id"]
-        new_vnf["policy"] = policy
+    result = find_arg_by_key(args,"fault_monitoring_policy")
+    if result!=None:
+        monitoring_interval = result["monitoring_interval"]
+        if monitoring_interval is int and monitoring_interval > 0:
+            policy = add_fault_monitoring_policy(args)
+            del policy["vnf_id"]
+            new_vnf["fault_monitoring_policy"] = policy
     return {"success":True, "data":[new_vnf]}
 
-def add_policy(args):
+def add_fault_monitoring_policy(args):
     new_policy = {
         "id":str(uuid.uuid4()),
         "vnf_id":find_arg_by_key(args,"vnf_id"),
         "state":"active",
-        "monitoring_interval":find_arg_by_key(args,"monitoring_interval")
+        "monitoring_interval":find_arg_by_key(args,"fault_monitoring_policy")["monitoring_interval"]
     }
     result = find_policy(new_policy["id"])
     if result["success"]==True:

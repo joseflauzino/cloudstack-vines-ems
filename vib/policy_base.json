@@ -1,14 +1,4 @@
 {
 	"policies":[
-		{
-			"vnf_id":"fcb4b154-9be4-4afe-a84a-c19b3747b8bb",
-			"state":"active",
-			"monitoring_interval":5
-		},
-		{
-			"vnf_id":"aab4b154-9be4-4afe-a84a-c19b3747b8bb",
-			"state":"inactive",
-			"monitoring_interval":5
-		}
 	]
 }
