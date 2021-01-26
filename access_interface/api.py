@@ -121,7 +121,7 @@ def ems_vnf_invalid_usage_float(invalid_value):
 def ems_vnf_start_monitoring(vnf_id):
     print("Start monitoring")
     args = []
-    args.append({"vnf_id":str(request.json['vnf_id'])})
+    args.append({"vnf_id":str(vnf_id)})
     response = vib_client.start_vnf_monitoring(args)
     if response["success"] == False:
         return {'status':'error','message':response["data"]}
@@ -130,7 +130,7 @@ def ems_vnf_start_monitoring(vnf_id):
 @app.route('/v1.0/ems/vnf/stopmonitoring/<uuid:vnf_id>', methods=['POST'])
 def ems_vnf_stop_monitoring(vnf_id):
     args = []
-    args.append({"vnf_id":str(request.json['vnf_id'])})
+    args.append({"vnf_id":str(vnf_id)})
     response = vib_client.stop_vnf_monitoring(args)
     if response["success"] == False:
         return {'status':'error','message':response["data"]}
