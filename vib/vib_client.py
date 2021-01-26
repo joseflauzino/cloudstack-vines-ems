@@ -53,17 +53,19 @@ def add_vnf(args):
         print("Capturando monitoring_interval")
         monitoring_interval = result["monitoring_interval"]
         if monitoring_interval is int and monitoring_interval > 0:
+            print("monitoring_interval: "+str(monitoring_interval))
             policy = add_fault_monitoring_policy(args)
             del policy["vnf_id"]
             new_vnf["fault_monitoring_policy"] = policy
     return {"success":True, "data":[new_vnf]}
 
 def add_fault_monitoring_policy(args):
+    result = find_arg_by_key(args,"fault_monitoring_policy")
     new_policy = {
         "id":str(uuid.uuid4()),
         "vnf_id":find_arg_by_key(args,"vnf_id"),
         "state":"active",
-        "monitoring_interval":find_arg_by_key(args,"fault_monitoring_policy")["monitoring_interval"]
+        "monitoring_interval":result["monitoring_interval"]
     }
     print("New policy:"+str(new_policy))
     result = find_policy(new_policy["id"])
