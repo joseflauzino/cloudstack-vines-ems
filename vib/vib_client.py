@@ -33,7 +33,11 @@ def find_arg_by_key(array, key):
 # CREATE
 #------------------------------------
 def add_vnf(args):
-    new_vnf = {"id":find_arg_by_key(args,"vnf_id"),"ip":find_arg_by_key(args,"vnf_ip"),"vnf_exp":find_arg_by_key(args,"vnf_platform")}
+    new_vnf = {
+        "id":find_arg_by_key(args,"vnf_id"),
+        "ip":find_arg_by_key(args,"vnf_ip"),
+        "vnf_exp":find_arg_by_key(args,"vnf_platform")
+    }
     result = find_vnf(new_vnf["id"])
     if result["success"]==True:
         return {"success":False, "data":"Could not add VNF with ID %s: VNF already exists." % (new_vnf["id"])}
@@ -44,11 +48,34 @@ def add_vnf(args):
     except Exception as e:
         return {"success":False, "data":"Could not add VNF %s: %s" % (new_vnf,e)}
     new_vnf["type"]="vnf"
+    result = find_arg_by_key(args,"monitoring_interval")
+    if result is int and result > 0:
+        policy = add_policy(args)
+        del policy["vnf_id"]
+        new_vnf["policy"] = policy
     return {"success":True, "data":[new_vnf]}
+
+def add_policy(args):
+    new_policy = {
+        "id":str(uuid.uuid4()),
+        "vnf_id":find_arg_by_key(args,"vnf_id"),
+        "state":"active",
+        "monitoring_interval":find_arg_by_key(args,"monitoring_interval")
+    }
+    result = find_policy(new_policy["id"])
+    if result["success"]==True:
+        return {"success":False, "data":"Could not add policy with ID %s: policy already exists." % (new_policy["id"])}
+    try:
+        data = _read_base("policy_base")
+        data["policies"].append(new_policy)
+        save_base("policy_base",data)
+    except Exception as e:
+        return {"success":False, "data":"Could not add policy %s: %s" % (new_policy,e)}
+    new_policy["type"]="policy"
+    return {"success":True, "data":[new_policy]}
 
 def create_subscription(args):
     new_subscription = {
-        "id":str(uuid.uuid4()),
         "vnf_id":find_arg_by_key(args,"vnf_id"),
         "vnfm_ip":find_arg_by_key(args,"vnfm_ip"),
         "api_key":find_arg_by_key(args,"api_key"),
@@ -85,6 +112,20 @@ def find_vnf(vnf_id=None):
         if vnf["id"] == vnf_id:
             vnf["type"]="vnf"
             return {"success":True, "data":[vnf]}
+    return {"success":False, "data":"Could not find %s" % (vnf_id)}
+
+def find_policy(vnf_id=None):
+    if vnf_id == None:
+        try:
+            policies = _read_base("policy_base")["policies"]
+            return {"success":True, "data":policies}
+        except Exception as e:
+            return {"success":False, "data":"Could not select all VNFs: %s" % (e)}
+    data = _read_base("policy_base")["policies"]
+    for policy in data:
+        if policy["vnf_id"] == vnf_id:
+            policy["type"]="policy"
+            return {"success":True, "data":[policy]}
     return {"success":False, "data":"Could not find %s" % (vnf_id)}
 
 def find_subscription(subscription_id):
@@ -134,6 +175,20 @@ def delete_vnf(vnf_id=None):
         save_base("vnf_base",data)
     except Exception as e:
         return {"success":False, "data":"Could not remove VNF %s: %s" % (vnf_id,e)}
+    _delete_policy(vnf["id"])
+    return {"success":True, "data":[]}
+
+def _delete_policy(vnf_id):
+    result = find_policy(vnf_id)
+    if result["success"] == False:
+        return result["data"]
+    policy = result["data"][0]
+    data = _read_base("policy_base")
+    try:
+        data["policies"].remove(policy)
+        save_base("policy_base",data)
+    except Exception as e:
+        return {"success":False, "data":"Could not remove policy of the VNF %s: %s" % (vnf_id,e)}
     return {"success":True, "data":[]}
 
 def delete_subscription(subscription_id):
