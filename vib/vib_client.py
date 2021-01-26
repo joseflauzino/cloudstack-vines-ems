@@ -50,6 +50,7 @@ def add_vnf(args):
     new_vnf["type"]="vnf"
     result = find_arg_by_key(args,"fault_monitoring_policy")
     if result!=None:
+        print("Capturando monitoring_interval")
         monitoring_interval = result["monitoring_interval"]
         if monitoring_interval is int and monitoring_interval > 0:
             policy = add_fault_monitoring_policy(args)
