@@ -117,6 +117,49 @@ def ems_vnf_invalid_usage_int(invalid_value):
 def ems_vnf_invalid_usage_float(invalid_value):
     return invaliUuidResponse(invalid_value)
 
+@app.route('/v1.0/ems/vnf/startmonitoring/<uuid:vnf_id>', methods=['POST'])
+def ems_vnf_start_monitoring(vnf_id):
+    args = []
+    args.append({"vnf_id":str(request.json['vnf_id'])})
+    response = vib_client.start_vnf_monitoring(args)
+    if response["success"] == False:
+        return {'status':'error','message':response["data"]}
+    return {'status':'success','message':'VNF monitoring was successfully started','object':response["data"]}
+
+@app.route('/v1.0/ems/vnf/stopmonitoring/<uuid:vnf_id>', methods=['POST'])
+def ems_vnf_stop_monitoring(vnf_id):
+    args = []
+    args.append({"vnf_id":str(request.json['vnf_id'])})
+    response = vib_client.stop_vnf_monitoring(args)
+    if response["success"] == False:
+        return {'status':'error','message':response["data"]}
+    return {'status':'success','message':'VNF monitoring was successfully stop','object':response["data"]}
+
+# Handle invalid VNF IDs
+@app.route('/v1.0/ems/vnf/startmonitoring/<string:invalid_value>', methods=['POST'])
+def ems_vnf_start_monitoring_invalid_usage_string(invalid_value):
+    return invaliUuidResponse(invalid_value)
+
+@app.route('/v1.0/ems/vnf/startmonitoring/<int:invalid_value>', methods=['POST'])
+def ems_vnf_start_monitoring_invalid_usage_int(invalid_value):
+    return invaliUuidResponse(invalid_value)
+
+@app.route('/v1.0/ems/vnf/startmonitoring/<float:invalid_value>', methods=['POST'])
+def ems_vnf_start_monitoring_invalid_usage_float(invalid_value):
+    return invaliUuidResponse(invalid_value)
+
+@app.route('/v1.0/ems/vnf/stopmonitoring/<string:invalid_value>', methods=['POST'])
+def ems_vnf_stop_monitoring_invalid_usage_string(invalid_value):
+    return invaliUuidResponse(invalid_value)
+
+@app.route('/v1.0/ems/vnf/stopmonitoring/<int:invalid_value>', methods=['POST'])
+def ems_vnf_stop_monitoring_invalid_usage_int(invalid_value):
+    return invaliUuidResponse(invalid_value)
+
+@app.route('/v1.0/ems/vnf/stopmonitoring/<float:invalid_value>', methods=['POST'])
+def ems_vnf_stop_monitoring_invalid_usage_float(invalid_value):
+    return invaliUuidResponse(invalid_value)
+
 #------------------------------------------------------------------
 # Subscription
 #------------------------------------------------------------------

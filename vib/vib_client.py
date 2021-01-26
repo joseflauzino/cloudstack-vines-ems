@@ -143,6 +143,44 @@ def find_subscription(subscription_id):
 #------------------------------------
 # UPDATE
 #------------------------------------
+def start_vnf_monitoring(args):
+    vnf_id = find_arg_by_key(args,"vnf_id")
+    data = _read_base("policy_base")
+    for policy in data["policies"]:
+        if policy["vnf_id"] == vnf_id:
+            policy["state"] = "active"
+            try:
+                save_base("policy_base",data)
+            except Exception as e:
+                return {"success":False, "data":"Could not start the VNF monitoring."}
+            result = find_vnf(vnf_id)
+            if result["success"]==False:
+                return {"success":False, "data":"Could not start the VNF monitoring: VNF not found."}
+            vnf = result["data"][0]
+            vnf["fault_monitoring_policy"] = policy
+            vnf["type"] = "vnf"
+            return {"success":True, "data":[vnf]}
+    return {"success":False, "data":"Could not find an monitoring policy related to VNF %s" % (vnf_id)}
+
+def stop_vnf_monitoring(args):
+    vnf_id = find_arg_by_key(args,"vnf_id")
+    data = _read_base("policy_base")
+    for policy in data["policies"]:
+        if policy["vnf_id"] == vnf_id:
+            policy["state"] = "inactive"
+            try:
+                save_base("policy_base",data)
+            except Exception as e:
+                return {"success":False, "data":"Could not stop the VNF monitoring."}
+            result = find_vnf(vnf_id)
+            if result["success"]==False:
+                return {"success":False, "data":"Could not stop the VNF monitoring: VNF not found."}
+            vnf = result["data"][0]
+            vnf["fault_monitoring_policy"] = policy
+            vnf["type"] = "vnf"
+            return {"success":True, "data":[vnf]}
+    return {"success":False, "data":"Could not find an monitoring policy related to VNF %s" % (vnf_id)}
+
 def update_vnf(vnf_id,args):
     data = _read_base("vnf_base")
     for vnf in data["vnfs"]:
