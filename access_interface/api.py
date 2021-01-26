@@ -49,10 +49,9 @@ def ems_vnfs():
         args.append({"vnf_ip":str(request.json['vnf_ip'])})
         args.append({"vnf_platform":str(request.json['vnf_platform'])})
 
-        if request.json.get('fault_monitoring_policy'):
-            print("Existe politica de monitoramento de falhas!")
-        else:
-            print("NÃO Existe politica de monitoramento de falhas!")
+        if request.json.get('fault_monitoring_policy'): # there is a fault monitoring policy
+            print("Tipo do dado: "+string(type(request.json['fault_monitoring_policy'])))
+            args.append({"fault_monitoring_policy":request.json['fault_monitoring_policy']})
 
         response = vib_client.add_vnf(args)
         if response["success"] == False:
