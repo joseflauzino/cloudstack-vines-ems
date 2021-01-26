@@ -165,6 +165,8 @@ def delete_vnf(vnf_id=None):
         try:
             data = {"vnfs":[]}
             save_base("vnf_base",data)
+            data = {"policies":[]}
+            save_base("policy_base",data)
         except Exception as e:
             return {"success":False, "data":"Could not remove all VNFs: %s" % (e)}
         return {"success":True, "data":[]}
