@@ -50,15 +50,11 @@ def add_vnf(args):
     new_vnf["type"]="vnf"
     result = find_arg_by_key(args,"fault_monitoring_policy")
     if result!=None:
-        print("Capturando monitoring_interval")
         monitoring_interval = result["monitoring_interval"]
-        #if monitoring_interval is int and monitoring_interval > 0:
-        print("monitoring_interval: "+str(monitoring_interval))
         result = add_fault_monitoring_policy(new_vnf["id"],monitoring_interval)
         if result["success"]!=True:
             return {"success":False, "data":"VNF was added, but the fault monitoring policy could not be added"}
         policy = result["data"][0]
-        print("Returned policy: "+str(policy))
         del policy["vnf_id"]
         new_vnf["fault_monitoring_policy"] = policy
     return {"success":True, "data":[new_vnf]}
@@ -70,7 +66,6 @@ def add_fault_monitoring_policy(vnf_id,monitoring_interval):
         "state":"active",
         "monitoring_interval":monitoring_interval
     }
-    print("New policy:"+str(new_policy))
     result = find_policy(new_policy["id"])
     if result["success"]==True:
         return {"success":False, "data":"Could not add policy with ID %s: policy already exists." % (new_policy["id"])}
