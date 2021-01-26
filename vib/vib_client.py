@@ -52,11 +52,11 @@ def add_vnf(args):
     if result!=None:
         print("Capturando monitoring_interval")
         monitoring_interval = result["monitoring_interval"]
-        if monitoring_interval is int and monitoring_interval > 0:
-            print("monitoring_interval: "+str(monitoring_interval))
-            policy = add_fault_monitoring_policy(new_vnf["id"],monitoring_interval)
-            del policy["vnf_id"]
-            new_vnf["fault_monitoring_policy"] = policy
+        #if monitoring_interval is int and monitoring_interval > 0:
+        print("monitoring_interval: "+str(monitoring_interval))
+        policy = add_fault_monitoring_policy(new_vnf["id"],monitoring_interval)
+        del policy["vnf_id"]
+        new_vnf["fault_monitoring_policy"] = policy
     return {"success":True, "data":[new_vnf]}
 
 def add_fault_monitoring_policy(vnf_id,monitoring_interval):
