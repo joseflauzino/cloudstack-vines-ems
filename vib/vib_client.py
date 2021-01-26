@@ -65,6 +65,7 @@ def add_fault_monitoring_policy(args):
         "state":"active",
         "monitoring_interval":find_arg_by_key(args,"fault_monitoring_policy")["monitoring_interval"]
     }
+    print("New policy:"+str(new_policy))
     result = find_policy(new_policy["id"])
     if result["success"]==True:
         return {"success":False, "data":"Could not add policy with ID %s: policy already exists." % (new_policy["id"])}
