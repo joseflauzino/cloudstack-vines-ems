@@ -49,3 +49,31 @@ EOM
 echo "Restarting Apache2"
 systemctl restart apache2
 
+echo
+echo "--------------------------------------"
+echo " Fault Monitor installation"
+echo "--------------------------------------"
+
+echo "Creating the Vines EMS Fault Monitor Service"
+cat >/lib/systemd/system/vines-ems-fault-monitor.service <<'EOM'
+[Unit]
+Description=Vines EMS Fault Monitor Service
+After=multi-user.target
+
+[Service]
+WorkingDirectory=/etc/cloudstack-vines-ems
+User=root
+Type=idle
+ExecStart=/usr/bin/python3 /etc/cloudstack-vines-ems/fault_monitor/fault_monitor.py &> /dev/null
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+EOM
+
+echo "Reloading deamons"
+systemctl daemon-reload
+echo "Enabling Fault Monitor"
+systemctl enable vines-ems-fault-monitor.service
+echo "Starting Fault Monitor"
+systemctl status vines-ems-fault-monitor
