@@ -10,7 +10,7 @@ echo "--------------------------------------"
 echo " Access Interface installation"
 echo "--------------------------------------"
 echo "Installing requirements"
-apt -y update && apt -y install python3 python3-pip apache2 libapache2-mod-wsgi-py3
+apt -y install python3 python3-pip apache2 libapache2-mod-wsgi-py3
 pip3 install -r requirements.txt
 
 echo "Creating the Vines EMS directory"
