@@ -14,14 +14,14 @@ import sys
 import requests
 from pathlib import Path
 from time import sleep
-import logging
+import logging as logger
 currentdir = os.path.dirname(os.path.realpath(__file__))
 parentdir = os.path.dirname(currentdir)
 #print(parentdir)
 sys.path.insert(0,parentdir)
 from vib.vib_client import *
 
-logging.basicConfig(filename='fault_monitor.log', level=logging.DEBUG)
+logger.basicConfig(filename='fault_monitor.log', level=logger.DEBUG)
 
 ##################################################################
 ######################## Fault Monitor ###########################
@@ -30,7 +30,7 @@ logging.basicConfig(filename='fault_monitor.log', level=logging.DEBUG)
 threads = []
 
 def _notifyVnfm(vnf_id):
-	logging.info("Notifying VNFM about VNF "+vnf_id)
+	logger.info("Notifying VNFM about VNF "+vnf_id)
 
 def _reload_active_policies(interval=None):
 	result = find_policy()
@@ -40,7 +40,7 @@ def _reload_active_policies(interval=None):
 	if interval != None: # select by monitoring interval
 		for policy in result["data"]:
 			if policy["state"] == "active" and policy["monitoring_interval"] == interval:
-				logging.info("Adding policy "+str(policy["monitoring_interval"])+" in thread "+str(interval))
+				logger.info("Adding policy "+str(policy["monitoring_interval"])+" in thread "+str(interval))
 				active_policies.append(policy)
 	else: # select all active policies
 		for policy in result["data"]:
@@ -69,17 +69,17 @@ def monitoring(interval):
 			if result["success"] == False:
 				raise
 			if _test_vnf(result["data"][0]["ip"]) == False:
-				logging.info("[thread "+str(interval)+"] VNF "+result["data"][0]["ip"]+" is inactive")
+				logger.info("[thread "+str(interval)+"] VNF "+result["data"][0]["ip"]+" is inactive")
 				_notifyVnfm(result["data"][0]["id"])
 			else:
-				logging.info("[thread "+str(interval)+"] VNF "+result["data"][0]["ip"]+" is active")
+				logger.info("[thread "+str(interval)+"] VNF "+result["data"][0]["ip"]+" is active")
 		sleep(interval)
 		new_modfication_date = get_modfication_date()
 		if initial_modification < new_modfication_date:
 			initial_modification = new_modfication_date
 			active_policies = _reload_active_policies(interval)
 			number_of_active_policies = len(active_policies)
-	logging.info("Thread "+str(interval)+" ended")
+	logger.info("Thread "+str(interval)+" ended")
 
 
 def _create_monitoring_groups(active_policies):
@@ -112,7 +112,7 @@ def start_threads():
 			pass
 
 def _stop_threads():
-	logging.debug("Stopping Fault Monitor")
+	logger.debug("Stopping Fault Monitor")
 	os.kill(os.getpid(), signal.SIGTERM)
 
 def check_for_changing(started_point):
@@ -145,7 +145,7 @@ def main():
 
 if __name__ == '__main__':
 	try:
-		logging.debug("Fault Monitor is running now!")
+		logger.debug("Fault Monitor is running now!")
 		main()
 	except (KeyboardInterrupt):
 		_stop_threads()
