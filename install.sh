@@ -76,4 +76,4 @@ systemctl daemon-reload
 echo "Enabling Fault Monitor"
 systemctl enable vines-ems-fault-monitor.service
 echo "Starting Fault Monitor"
-systemctl status vines-ems-fault-monitor
+systemctl start vines-ems-fault-monitor
