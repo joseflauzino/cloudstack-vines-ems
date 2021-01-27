@@ -57,9 +57,9 @@ Run the command below to monitor errors.
 ### Fault Monitor
 Use the command below to monitor this module.
 
-	# tail -f /var/log/vines-ems/fault-monitor.log
+	# tail -f /etc/cloudstack-vines-ems/fault-monitor.log
 
 ### Performance Monitor
 Use the command below to monitor this module.
 
-	# tail -f /var/log/vines-ems/perf-monitor.log
+	# tail -f /etc/cloudstack-vines-ems/perf-monitor.log
