@@ -21,7 +21,7 @@ parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir)
 from vib.vib_client import *
 
-logger.basicConfig(filename='fault_monitor.log', level=logger.DEBUG)
+logger.basicConfig(filename='fault_monitor.log', level=logger.INFO)
 
 ##################################################################
 ######################## Fault Monitor ###########################
