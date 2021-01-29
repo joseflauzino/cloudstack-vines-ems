@@ -79,7 +79,7 @@ def monitoring(interval):
 				logger.info("[thread "+str(interval)+"] VNF "+current_vnf["ip"]+" is inactive")
 				if current_vnf["state"] == "active":
 					update_vnf_state(current_vnf["id"],"inactive")
-					_notifyVnfm(current_vnf["id"],"inactive")
+				_notifyVnfm(current_vnf["id"],"inactive")
 			else: # VNF is active
 				logger.info("[thread "+str(interval)+"] VNF "+current_vnf["ip"]+" is active")
 				if current_vnf["state"] == "inactive":
