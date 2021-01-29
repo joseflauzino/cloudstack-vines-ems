@@ -35,6 +35,7 @@ def find_arg_by_key(array, key):
 def add_vnf(args):
     new_vnf = {
         "id":find_arg_by_key(args,"vnf_id"),
+        "state":"active",
         "ip":find_arg_by_key(args,"vnf_ip"),
         "vnf_exp":find_arg_by_key(args,"vnf_platform")
     }

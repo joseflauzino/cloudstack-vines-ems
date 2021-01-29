@@ -29,8 +29,8 @@ logger.basicConfig(filename='fault_monitor.log', level=logger.INFO)
 
 threads = []
 
-def _notifyVnfm(vnf_id):
-	logger.info("Notifying VNFM about VNF "+vnf_id)
+def _notifyVnfm(vnf_id,new_state):
+	logger.info("Notifying VNFM about VNF: id="+vnf_id+" new_state="+new_state)
 
 def _reload_active_policies(interval=None):
 	result = find_policy()
@@ -59,6 +59,12 @@ def _test_vnf(vnf_ip):
 	except:
 		return False
 
+def update_vnf_state(vnf_id,new_state):
+	args = [{"state":new_state}]
+	result = update_vnf(vnf_id,args)
+	if result["success"] == False:
+		raise
+
 def monitoring(interval):
 	initial_modification = get_modfication_date()
 	active_policies = _reload_active_policies(interval)
@@ -68,11 +74,17 @@ def monitoring(interval):
 			result = find_vnf(policy["vnf_id"])
 			if result["success"] == False:
 				raise
-			if _test_vnf(result["data"][0]["ip"]) == False:
-				logger.info("[thread "+str(interval)+"] VNF "+result["data"][0]["ip"]+" is inactive")
-				_notifyVnfm(result["data"][0]["id"])
-			else:
-				logger.info("[thread "+str(interval)+"] VNF "+result["data"][0]["ip"]+" is active")
+			current_vnf = result["data"][0]
+			if _test_vnf(current_vnf["ip"]) == False: # VNF is inactive
+				logger.info("[thread "+str(interval)+"] VNF "+current_vnf["ip"]+" is inactive")
+				if current_vnf["state"] == "active":
+					update_vnf_state(current_vnf["id"],"inactive")
+					_notifyVnfm(current_vnf["id"],"inactive")
+			else: # VNF is active
+				logger.info("[thread "+str(interval)+"] VNF "+current_vnf["ip"]+" is active")
+				if current_vnf["state"] == "inactive":
+					update_vnf_state(current_vnf["id"],"active")
+					_notifyVnfm(current_vnf["id"],"active")
 		sleep(interval)
 		new_modfication_date = get_modfication_date()
 		if initial_modification < new_modfication_date:
