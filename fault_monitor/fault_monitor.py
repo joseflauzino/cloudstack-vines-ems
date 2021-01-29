@@ -53,11 +53,10 @@ def get_modfication_date():
 	return last_modification.stat().st_mtime
 
 def _test_vnf(vnf_ip):
-	try:
-		response = requests.get("http://"+vnf_ip+":8000/api/emsstatus", timeout=0.01)
-		return True
-	except:
-		return False
+	ping_cmd = "ping -c 1 -n -W 2 "+vnf_ip
+    if os.system(ping_cmd) != 0:
+        return False # VNF is inactive
+    return True # VNF is active
 
 def update_vnf_state(vnf_id,new_state):
 	args = [{"state":new_state}]
