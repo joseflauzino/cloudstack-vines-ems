@@ -187,9 +187,6 @@ def update_vnf(vnf_id,args):
     for vnf in data["vnfs"]:
         if vnf["id"] == vnf_id:
             for item in args:
-                print("item.keys: "+str(list(item.keys())))
-                print("first item key: "+str(list(item.keys())[0]))
-                print("first item value: "+item[list(item.keys())[0]])
                 vnf[list(item.keys())[0]] = item[list(item.keys())[0]]
             try:
                 save_base("vnf_base",data)
