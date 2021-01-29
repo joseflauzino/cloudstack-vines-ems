@@ -60,7 +60,7 @@ def _test_vnf(vnf_ip):
 
 def update_vnf_state(vnf_id,new_state):
 	args = []
-    args.append({"state":new_state})
+	args.append({"state":new_state})
 	result = update_vnf(vnf_id,args)
 	if result["success"] == False:
 		raise
