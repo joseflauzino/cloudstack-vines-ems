@@ -54,9 +54,9 @@ def get_modfication_date():
 
 def _test_vnf(vnf_ip):
 	ping_cmd = "ping -c 1 -n -W 2 "+vnf_ip
-    if os.system(ping_cmd) != 0:
-        return False # VNF is inactive
-    return True # VNF is active
+	if os.system(ping_cmd) != 0:
+		return False # VNF is inactive
+	return True # VNF is active
 
 def update_vnf_state(vnf_id,new_state):
 	args = [{"state":new_state}]
