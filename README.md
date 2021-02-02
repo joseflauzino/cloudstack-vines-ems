@@ -4,11 +4,11 @@
 
 Clone this repository.
 
-	# git clone https://github.com/joseflauzino/cloudstack-vines-em.git
+	# git clone https://github.com/joseflauzino/cloudstack-vines-ems.git
 
 Go to the directory.
 
-	# cd cloudstack-vines-em
+	# cd cloudstack-vines-ems
 
 Run the install.sh script as root.
 
