@@ -1,4 +1,4 @@
-# CloudStack Vines EMS
+# CloudStack/Vines EMS
 
 ## Installation
 
