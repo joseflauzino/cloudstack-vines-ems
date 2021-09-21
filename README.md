@@ -1,4 +1,4 @@
-# CloudStack Vines EMS
+# CloudStack/Vines EMS
 
 ## Installation
 
@@ -21,4 +21,3 @@ For Alpine - run the `install-for-alpine.sh` script
 
 	# chmod +x install-for-alpine.sh
 	# sh install-for-alpine.sh
-
