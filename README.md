@@ -24,4 +24,8 @@ For Alpine - run the `install-for-alpine.sh` script
 
 ## Administration
 
+For learn about how to manage the Vines EMS see:
 
+[ADMIN-GUIDE-FOR-UBUNTU.md](ADMIN-GUIDE-FOR-UBUNTU.md)
+
+[ADMIN-GUIDE-FOR-ALPINE.md](ADMIN-GUIDE-FOR-ALPINE.md)
