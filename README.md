@@ -1,4 +1,4 @@
-# CloudStack/Vines EMS
+# CloudStack/Vines EMS # CloudStack/Vines EMS [![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=joseflauzino_cloudstack-vines-ems&metric=ncloc)](https://sonarcloud.io/dashboard?id=joseflauzino_cloudstack-vines-ems) ![GitHub language count](https://img.shields.io/github/languages/count/joseflauzino/cloudstack-vines-ems.svg) ![GitHub top language](https://img.shields.io/github/languages/top/joseflauzino/cloudstack-vines-ems.svg)
 
 ## Installation
 
