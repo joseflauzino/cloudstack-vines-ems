@@ -2,64 +2,23 @@
 
 ## Installation
 
-Clone this repository.
+Step 1 - Clone this repository.
 
 	# git clone https://github.com/joseflauzino/cloudstack-vines-ems.git
 
-Go to the directory.
+Step 2 - Go to the directory.
 
 	# cd cloudstack-vines-ems
 
-Run the install.sh script as root.
+Step 3 - Run the installation script as root.
+
+For Ubuntu run the `install.sh` script:
 
 	# chmod +x install.sh
-	# ./install.sh
+	# sh install.sh
 
-## Managing EMS Modules
+For Alpine - run the `install-for-alpine.sh` script
 
-### Access Interface Module
-This module is run by an Apache2 web server using WSGI. So, to managed it uses the apache's systemctl commands.
+	# chmod +x install-for-alpine.sh
+	# sh install-for-alpine.sh
 
-	# systemctl status apache2  ## get status
-	# systemctl stop apache2    ## stop the service
-	# systemctl start apache2   ## start the service
-	# systemctl restart apache2 ## restart the service
-
-### Fault Monitor
-Use the commands below to manage this module.
-
-	# systemctl status vines-ems-fault-monitor  ## get status
-	# systemctl stop vines-ems-fault-monitor    ## stop the service
-	# systemctl start vines-ems-fault-monitor   ## start the service
-	# systemctl restart vines-ems-fault-monitor ## restart the service
-
-### Performance Monitor
-Use the commands below to manage this module.
-
-	# systemctl status vines-ems-perf-monitor  ## get status
-	# systemctl stop vines-ems-perf-monitor    ## stop the service
-	# systemctl start vines-ems-perf-monitor   ## start the service
-	# systemctl restart vines-ems-perf-monitor ## restart the service
-
-## Monitoring EMS Modules Log
-
-### Access Interface Module
-Since this module is run by an Apache2 web server using WSGI, the logs are recorded in the Apache2 log files.
-
-Run the command below to monitor the access.
-
-	# tail -f /var/log/apache2/access.log
-
-Run the command below to monitor errors. 
-
-	# tail -f /var/log/apache2/error.log
-
-### Fault Monitor
-Use the command below to monitor this module.
-
-	# tail -f /etc/cloudstack-vines-ems/fault-monitor.log
-
-### Performance Monitor
-Use the command below to monitor this module.
-
-	# tail -f /etc/cloudstack-vines-ems/perf-monitor.log

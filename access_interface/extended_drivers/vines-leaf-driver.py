@@ -16,21 +16,21 @@ import requests
 #------------------------------------------------------------------
 def vnf_status(args):
 	try:
-		response = _sendRequest("GET", _create_url(_find_by_key(args,"vnf_ip"), "emsstatus"))
+		response = _sendRequest("GET", _create_url(_find_by_key(args,"vnf_ip"), "vnf-exp-status"))
 		return {'status':'success','data':response.text}
 	except:
 		return {'status':'success','data':'could not get vnf status'}
 
 def status(args):
 	try:
-		response = _sendRequest("GET", _create_url(_find_by_key(args,"vnf_ip"), "running"))
+		response = _sendRequest("GET", _create_url(_find_by_key(args,"vnf_ip"), "status"))
 		return {'status':'success','data':response.text}
 	except:
 		return {'status':'success','data':'could not get network function status'}
 
 def push_vnfp(args):
 	vnfp_path = _find_by_key(args,"vnfp_path")
-	url = _create_url(_find_by_key(args,"vnf_ip"), "push_vnfp")
+	url = _create_url(_find_by_key(args,"vnf_ip"), "push-vnfp")
 	function = open(vnfp_path, 'rb').read()
 	try:
 		response = requests.post(url, data=function, headers={'Content-Type': 'application/octet-stream'})
