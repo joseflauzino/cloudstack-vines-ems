@@ -9,7 +9,7 @@
 echo "Installing requirements"
 sed -i -e "s/#h/h/" /etc/apk/repositories
 apk update
-apk add python3-dev build-base linux-headers pcre-dev py3-pip
+apk add python3 py3-pip python3-dev build-base linux-headers pcre-dev
 pip3 install -r requirements.txt
 
 echo "Creating the Vines EMS directory"
