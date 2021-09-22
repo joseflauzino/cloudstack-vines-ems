@@ -17,11 +17,11 @@ mkdir /etc/cloudstack-vines-ems/
 cp -R ./* /etc/cloudstack-vines-ems/
 
 echo "Creating uWSGI configuration file"
-cat >/var/www/html/wsgi.py <<'EOM'
+cat >/etc/cloudstack-vines-ems/wsgi.py <<'EOM'
 import sys
 sys.path.insert(0, "/etc/cloudstack-vines-ems/")
 from access_interface.api import app
 EOM
 
 echo "Configuring autostart"
-echo "@reboot uwsgi --socket 0.0.0.0:9000 --protocol=http -w wsgi:app & > /dev/null" >> /etc/crontabs/root
+echo "@reboot cd /etc/cloudstack-vines-ems/ && uwsgi --socket 0.0.0.0:9000 --protocol=http -w wsgi:app & > /dev/null" >> /etc/crontabs/root
