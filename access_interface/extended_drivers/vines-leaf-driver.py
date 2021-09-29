@@ -16,14 +16,14 @@ import requests
 #------------------------------------------------------------------
 def vnf_status(args):
 	try:
-		response = _sendRequest("GET", _create_url(_find_by_key(args,"vnf_ip"), "vnf-exp-status"))
+		response = _sendRequest("GET", _create_url(_find_by_key(args,"vnf_ip"), "vnf-exp-status"), None)
 		return {'status':'success','data':response.text}
 	except:
 		return {'status':'success','data':'could not get vnf status'}
 
 def status(args):
 	try:
-		response = _sendRequest("GET", _create_url(_find_by_key(args,"vnf_ip"), "status"))
+		response = _sendRequest("GET", _create_url(_find_by_key(args,"vnf_ip"), "status"), None)
 		return {'status':'success','data':response.text}
 	except:
 		return {'status':'success','data':'could not get network function status'}
@@ -41,31 +41,38 @@ def push_vnfp(args):
 
 def install(args):
 	try:
-		response = _sendRequest("POST", _create_url(_find_by_key(args,"vnf_ip"), "install"))
+		response = _sendRequest("POST", _create_url(_find_by_key(args,"vnf_ip"), "install"), None)
 		return {'status':'success','data':response.text}
 	except:
 		return {'status':'success','data':'could not install function'}
 
 def start(args):
 	try:
-		response = _sendRequest("POST", _create_url(_find_by_key(args,"vnf_ip"), "start"))
+		response = _sendRequest("POST", _create_url(_find_by_key(args,"vnf_ip"), "start"), None)
 		return {'status':'success','data':response.text}
 	except:
 		return {'status':'success','data':'could not start function'}
 
 def stop(args):
 	try:
-		response = _sendRequest("POST", _create_url(_find_by_key(args,"vnf_ip"), "stop"))
+		response = _sendRequest("POST", _create_url(_find_by_key(args,"vnf_ip"), "stop"), None)
 		return {'status':'success','data':response.text}
 	except:
 		return {'status':'success','data':'could not stop function'}
 
 def get_log(args):
 	try:
-		response = _sendRequest("GET", _create_url(_find_by_key(args,"vnf_ip"), "log"))
+		response = _sendRequest("GET", _create_url(_find_by_key(args,"vnf_ip"), "log"), None)
 		return {'status':'success','data':response.text}
 	except:
 		return {'status':'success','data':'could not get function log'}
+
+def set_sfc_forwarding(args):
+	try:
+		response = _sendRequest("POST", _create_url(_find_by_key(args,"vnf_ip"), "set-sfc-forwarding"), _create_url(_find_by_key(args,"data")))
+		return {'status':'success','data':response.text}
+	except:
+		return {'status':'success','data':'could not set SFC forwarding'}
 
 #------------------------------------------------------------------
 # Util
@@ -73,11 +80,11 @@ def get_log(args):
 def _create_url(vnf_ip, task):
 	return ''.join(['http://', vnf_ip, ':8000/api/', task])
 
-def _sendRequest(method, url):
+def _sendRequest(method, url, data):
 	if method=="GET":
 		response = requests.get(url)
 	if method=="POST":
-		response = requests.post(url)
+		response = requests.post(url, data=data)
 	return response
 
 def _find_by_key(array, key):

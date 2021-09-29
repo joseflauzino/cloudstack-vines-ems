@@ -373,6 +373,25 @@ def invaliUuidResponse(invalid_value):
 
 
 ##################################################################
+################# Service Function Chaining ######################
+##################################################################
+
+#------------------------------------------------------------------
+# SFC configuration
+#------------------------------------------------------------------
+@app.route('/v1.0/sfc/setsfcforwarding', methods=['POST'])
+def setsfcforwarding():
+    args = []
+    args.append({"vnf_ip":str(request.json['vnf_ip'])})
+    args.append({"data":str(json.dumps(request.json['data']))})
+    response = driver_controller.handle_call("set_sfc_forwarding",args)
+    if response["status"] == "ERROR":
+        return {'status':'error','message':"Could not set SFC forwarding"}
+    return {'status':'success','message':'Forward rule configured'}
+
+
+
+##################################################################
 ############################# Main ###############################
 ##################################################################
 if __name__ == '__main__':
