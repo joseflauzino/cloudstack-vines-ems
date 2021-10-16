@@ -2,15 +2,17 @@
 # description       : CloudStack Vines EMS - Access Interface Module
 # author            : Jose Flauzino
 # email             : jwvflauzino@inf.ufpr.br
-# date              : 20210127
+# date              : 20211015
 # license           : Apache 2.0
 # py version        : 3.6.9
 #==============================================================================
 
 import os
 import sys
+import json
 from flask import Flask, request
 from access_interface.driver_controller import *
+from access_interface.api_util import *
 
 ##################################################################
 ###################### Global definitions ########################
@@ -389,7 +391,17 @@ def setsfcforwarding():
         return {'status':'error','message':"Could not set SFC forwarding"}
     return {'status':'success','message':'Forward rule configured'}
 
-
+@app.route('/api/sfc/setfirstvnf', methods=['POST'])
+def setfirstvnf():
+    set_first_vnf_cmd = "ip route add %s via %s" % (request.json['last_vnf'], request.json['first_vnf'])
+    ssh_cmd = 'ssh -i /root/.ssh/id_rsa.cloud %s -p 3922 \'%s\'' % (request.json['router_ip'], set_first_vnf_cmd)
+    cmd_list = []
+    for part in ssh_cmd.split(' '):
+        cmd_list.append(part)
+    response = run_shell_cmd(cmd_list)
+    if response["status"] == "ERROR":
+        return {'status':'error','data':"could not set first VNF"}
+    return {'status':'success','data':'First VNF route configured'}
 
 ##################################################################
 ############################# Main ###############################
