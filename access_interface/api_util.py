@@ -8,9 +8,21 @@
 #==============================================================================
 
 import subprocess
-
+"""
 def run_shell_cmd(cmd_list):
 	cmd_response = subprocess.run(cmd_list, stdout=subprocess.PIPE)
 	if cmd_response.returncode == 0:
 		return {"status":"SUCCESS", "data":cmd_response.stdout}
 	return {"status":"ERROR", "data":cmd_response.stdout}
+"""
+
+def run_shell_cmd(cmd):
+	process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+	output, error = process.communicate()
+	if process.returncode != 0:
+		print "Command error"
+		return {"status":"ERROR","data":output}
+	output = output.rstrip("\n")
+	if output == "":
+		output = "None"
+	return {"status":"SUCCESS","data":output}

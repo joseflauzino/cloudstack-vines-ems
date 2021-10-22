@@ -395,6 +395,14 @@ def setsfcforwarding():
 def setfirstvnf():
     set_first_vnf_cmd = "ip route add %s via %s" % (request.json['last_vnf'], request.json['first_vnf'])
     ssh_cmd = 'ssh -i /root/.ssh/id_rsa.cloud %s -p 3922 \'%s\'' % (request.json['router_ip'], set_first_vnf_cmd)
+    response = run_shell_cmd(ssh_cmd)
+    if response["status"] == "ERROR":
+        return {'status':'error','data':"could not set first VNF"}
+    return {'status':'success','data':'First VNF route configured'}
+"""
+def setfirstvnf():
+    set_first_vnf_cmd = "ip route add %s via %s" % (request.json['last_vnf'], request.json['first_vnf'])
+    ssh_cmd = 'ssh -i /root/.ssh/id_rsa.cloud %s -p 3922 \'%s\'' % (request.json['router_ip'], set_first_vnf_cmd)
     cmd_list = []
     for part in ssh_cmd.split(' '):
         cmd_list.append(part)
@@ -402,6 +410,8 @@ def setfirstvnf():
     if response["status"] == "ERROR":
         return {'status':'error','data':"could not set first VNF"}
     return {'status':'success','data':'First VNF route configured'}
+"""
+
 
 ##################################################################
 ############################# Main ###############################
