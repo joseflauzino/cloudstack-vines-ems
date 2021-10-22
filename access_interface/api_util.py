@@ -22,7 +22,8 @@ def run_shell_cmd(cmd):
 	if process.returncode != 0:
 		print("Command error")
 		return {"status":"ERROR","data":output}
-	output = output.rstrip("\n")
+	print(output)
+	#output = output.rstrip("\n")
 	if output == "":
 		output = "None"
 	return {"status":"SUCCESS","data":output}
